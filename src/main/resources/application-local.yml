@@ -1,0 +1,63 @@
+server.port: 9760
+spring:
+  config:
+    activate:
+      on-profile: local
+  main:
+    allow-bean-definition-overriding: true
+  application:
+    name: atdocs
+  sql:
+    init:
+      encoding: UTF-8
+  datasource:
+    hikari:
+      driver-class-name: org.postgresql.Driver
+      jdbc-url: jdbc:postgresql://localhost:5432/atdocs
+      username: atworks
+      password: atworks
+      connection-timeout: 30000 #maximum number of milliseconds that a client will wait for a connection
+      minimum-idle: 10 #minimum number of idle connections maintained by HikariCP in a connection pool
+      maximum-pool-size: 20 #maximum pool size
+      idle-timeout: 10000 #maximum idle time for connection
+      max-lifetime: 30000 # maximum lifetime in milliseconds of a connection in the pool after it is closed.
+      auto-commit: false #default auto-commit behavior.
+#      schema: classpath*:database/schema.sql
+  jpa:
+    database-platform: org.hibernate.dialect.PostgreSQLDialect
+    generate-ddl: false
+    open-in-view: false
+    show-sql: true
+    hibernate:
+      ddl-auto: create
+    properties:
+      hibernate.query.in_clause_parameter_padding: true
+      hibernate.query.plan_cache_max_size: 64
+      hibernate.query.plan_parameter_metadata_max_size: 16
+      hibernate.format_sql: true
+        # 중요! 어플리케이션 설정 메모리보다 낮아야함.
+#        query:
+#          in_clause_parameter_padding: true
+#          plan_cache_max_size: 64
+#          plan_parameter_metadata_max_size: 16
+  h2:
+    console:
+      enabled: true
+      path: /h2-console
+  batch:
+    jdbc: 
+      initialize-schema: always
+    job.enabled: false
+  resource: 
+    static-locations: classpath:/static/
+  
+  data.rest.basePath: /api/v1
+
+  servlet.multipart:
+    location: /upload
+    max-file-size: 100MB
+    max-request-size: 100MB
+#springfox.documentation.swagger.use-model-v3: true
+
+chunkSize: 50
+poolSize: 8
