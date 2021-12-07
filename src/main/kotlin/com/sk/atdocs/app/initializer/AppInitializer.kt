@@ -26,6 +26,5 @@ class AppInitializer(
            return
         }
         project = projectRepository.save(project)
-//        project.id?.let { snapshotService.CreateSnapshot("", it) }
     }
 }
