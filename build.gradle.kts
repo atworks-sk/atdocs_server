@@ -56,6 +56,13 @@ dependencies {
 //	implementation("com.github.javaparser:javaparser:3.1")
 
 
+	implementation ("com.googlecode.json-simple:json-simple:1.1")
+	implementation ("org.json:json:20180130")
+	implementation ("org.apache.poi:poi:5.0.0")
+	implementation ("org.apache.poi:poi-ooxml:5.0.0")
+	implementation ("pull-parser:pull-parser:2.1.10")
+
+
 	testImplementation("org.springframework.boot:spring-boot-starter-test")
 }
 

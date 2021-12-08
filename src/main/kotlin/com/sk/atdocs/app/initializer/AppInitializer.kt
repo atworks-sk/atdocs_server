@@ -21,10 +21,12 @@ class AppInitializer(
 
     @PostConstruct
     fun postConstruct() {
-        var project = ProjectEntity("sample project")
         if(projectRepository.findById(1L).isPresent){
            return
         }
-        project = projectRepository.save(project)
+        var project = ProjectEntity("atWorks - 테스트 자동화 시스템")
+        var project2 = ProjectEntity("SFTM - 짝퉁 NTM")
+        projectRepository.save(project)
+        projectRepository.save(project2)
     }
 }
