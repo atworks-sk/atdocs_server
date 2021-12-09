@@ -1,13 +1,16 @@
 package com.sk.atdocs.service.impl
 
-import com.github.javaparser.StaticJavaParser
 import com.sk.atdocs.domain.entity.ProjectEntity
 import com.sk.atdocs.domain.repository.ProjectRepository
+import com.sk.atdocs.dto.project.ProjectDto
+import com.sk.atdocs.dto.project.SearchListReqDto
 import com.sk.atdocs.service.ProjectService
-import com.sk.atdocs.service.SnapshotService
 import mu.KotlinLogging
+import org.springframework.data.domain.Page
+import org.springframework.data.domain.Pageable
 import org.springframework.stereotype.Service
-import java.io.File
+import org.springframework.transaction.annotation.Transactional
+import java.util.function.Function
 
 
 private val logger = KotlinLogging.logger {  }
@@ -17,12 +20,23 @@ class ProjectServiceImpl(
 ): ProjectService {
 
     /*
-     * 자바 소스를 분석/번역 시스템
+     * project id로 ProjectEntity 조회
      */
     override fun findById(projectId: Long): ProjectEntity {
 
         var res = projectRepository.findById(projectId)
         return res.get()
     }
+
+    @Transactional(readOnly = true)
+    override fun searchList(reqDto: SearchListReqDto, pageable: Pageable): Page<ProjectDto>? {
+        var entities = projectRepository.findByProjectNameLike("%"+reqDto.projectName+"%", pageable);
+
+        return entities.map { projectEntity: ProjectEntity? ->
+            ProjectDto(projectEntity!!)
+        }
+    }
+
+
 
 }

@@ -13,10 +13,10 @@ import javax.persistence.MappedSuperclass
 abstract class BaseTimeEntity () {
 
     @CreatedDate
-    private val createdDate: LocalDateTime? = LocalDateTime.now()
+    val createdDateTime: LocalDateTime? = LocalDateTime.now()
 
     @LastModifiedDate
-    private val modifiedDate: LocalDateTime? = LocalDateTime.now()
+    val modifiedDateTime: LocalDateTime? = LocalDateTime.now()
 
 
 }

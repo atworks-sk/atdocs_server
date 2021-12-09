@@ -24,9 +24,8 @@ class AppInitializer(
         if(projectRepository.findById(1L).isPresent){
            return
         }
-        var project = ProjectEntity("atWorks - 테스트 자동화 시스템")
-        var project2 = ProjectEntity("SFTM - 짝퉁 NTM")
-        projectRepository.save(project)
-        projectRepository.save(project2)
+        projectRepository.save(ProjectEntity("atWorks - 테스트 자동화 시스템", "com.skcc.atworks"))
+        projectRepository.save(ProjectEntity("SFTM - 짝퉁 NTM", "com.skcc.sftm"))
+
     }
 }
