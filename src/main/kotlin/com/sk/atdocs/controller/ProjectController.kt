@@ -1,5 +1,6 @@
 package com.sk.atdocs.controller
 //import lombok.RequiredArgsConstructor
+import com.sk.atdocs.dto.SaveResDto
 import com.sk.atdocs.dto.project.ProjectDto
 import com.sk.atdocs.dto.project.SearchListReqDto
 import com.sk.atdocs.service.ProjectService
@@ -28,9 +29,8 @@ class ProjectController (
     }
 
     @PostMapping("/save")
-    fun save(reqDto : ProjectDto) : ResponseEntity<ProjectDto>{
-        logger.info { reqDto.toString() }
-        return ResponseEntity.ok(reqDto)
+    fun save(@RequestBody reqDto : ProjectDto) : ResponseEntity<SaveResDto>{
+        return ResponseEntity.ok(projectService.save(reqDto))
     }
 
 
