@@ -10,6 +10,7 @@ import org.springframework.http.ResponseEntity
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.http.HttpStatus
 import org.springframework.web.bind.annotation.*
 
 private val logger = KotlinLogging.logger {  }
@@ -28,10 +29,17 @@ class ProjectController (
         return ResponseEntity.ok(projectService.searchList(reqDto, pageable))
     }
 
-    @PostMapping("/save")
-    fun save(@RequestBody reqDto : ProjectDto) : ResponseEntity<SaveResDto>{
-        return ResponseEntity.ok(projectService.save(reqDto))
+    @PutMapping("/save")
+    fun save(@RequestBody reqDto : ProjectDto) : ResponseEntity<HttpStatus>{
+        projectService.save(reqDto)
+        return ResponseEntity<HttpStatus>(HttpStatus.OK)
     }
 
+    @DeleteMapping("delete/{id}")
+    fun delete(@PathVariable id : Long) : ResponseEntity<HttpStatus>{
+        logger.info { "id -> " + id }
+        projectService.delete(id)
+        return ResponseEntity<HttpStatus>(HttpStatus.OK)
+    }
 
 }

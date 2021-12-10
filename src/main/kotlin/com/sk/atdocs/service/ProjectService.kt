@@ -10,5 +10,6 @@ import org.springframework.data.domain.Pageable
 interface ProjectService {
     fun findById(projectId: Long) : ProjectEntity
     fun searchList(reqDto: SearchListReqDto, pageable: Pageable): Page<ProjectDto>?
-    fun save(reqDto: ProjectDto): SaveResDto?
+    fun save(reqDto: ProjectDto): Long?
+    fun delete(projectId: Long): Long?
 }

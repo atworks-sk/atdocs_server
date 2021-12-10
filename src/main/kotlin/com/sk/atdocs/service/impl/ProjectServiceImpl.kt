@@ -1,6 +1,7 @@
 package com.sk.atdocs.service.impl
 
 import com.sk.atdocs.app.exception.CommonException
+import com.sk.atdocs.app.exception.ErrorCode
 import com.sk.atdocs.domain.entity.ProjectEntity
 import com.sk.atdocs.domain.repository.ProjectRepository
 import com.sk.atdocs.dto.SaveResDto
@@ -10,6 +11,7 @@ import com.sk.atdocs.service.ProjectService
 import mu.KotlinLogging
 import org.springframework.data.domain.Page
 import org.springframework.data.domain.Pageable
+import org.springframework.data.repository.findByIdOrNull
 import org.springframework.http.HttpStatus
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
@@ -46,7 +48,7 @@ class ProjectServiceImpl(
      * Save Project
      */
     @Transactional(readOnly = false)
-    override fun save(reqDto: ProjectDto): SaveResDto? {
+    override fun save(reqDto: ProjectDto): Long? {
         // id가 -1인경우 등록, 아니면 수정작업이 필요합니다.
         var id = reqDto.id
         var projectEntity: ProjectEntity? = null;
@@ -60,16 +62,22 @@ class ProjectServiceImpl(
         }
 
         projectEntity = projectRepository.save(projectEntity)
+            ?.let {
+                return it.id
+            }
+            ?: throw CommonException(ErrorCode.ERROR_NOT_MODIFY_OBJECT)
+    }
 
-        if(projectEntity == null){
-            return SaveResDto(-1L)
-        }
-        else{
-//            throw BusinessException("정상적으로 들어왔습니다.")
-            throw CommonException("E0001", "데이터 오류", HttpStatus.INTERNAL_SERVER_ERROR)
-        }
-
-        return SaveResDto(projectEntity.id)
+    /*
+     * Delete Project
+     */
+    override fun delete(projectId: Long): Long? {
+        val projectEntity = projectRepository.findByIdOrNull(projectId)
+            ?.let {
+                projectRepository.delete(it)
+                return it.id
+            }
+            ?: throw CommonException(ErrorCode.ERROR_NOT_MODIFY_OBJECT)
     }
 
 
