@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.RestController
 private val logger = KotlinLogging.logger {  }
 
 @RestController
-@RequestMapping("/snapshot")
+@RequestMapping("/api/v1/snapshot")
 class SnapshotController (
     var snapshotService: SnapshotService
     ) {
