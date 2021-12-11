@@ -86,7 +86,6 @@ class ProjectServiceImpl(
     override fun searchListWithoutPage(): ArrayList<ProjectDto>? {
         var projectList : ArrayList<ProjectDto>? = ArrayList<ProjectDto>()
         projectRepository.findAll().forEach { projectEntity ->
-            logger.info(projectEntity.projectName)
             projectList!!.add(ProjectDto(projectEntity))
         }
         return projectList
