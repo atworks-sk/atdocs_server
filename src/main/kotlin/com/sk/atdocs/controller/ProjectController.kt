@@ -42,4 +42,13 @@ class ProjectController (
         return ResponseEntity<HttpStatus>(HttpStatus.OK)
     }
 
+    /*
+     * project List search
+     */
+    @GetMapping("/searchListWithoutPage")
+    fun searchListWithoutPage(): ResponseEntity<ArrayList<ProjectDto>> {
+        return ResponseEntity.ok(projectService.searchListWithoutPage())
+    }
+
+
 }

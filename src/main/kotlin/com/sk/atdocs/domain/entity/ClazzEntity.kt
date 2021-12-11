@@ -27,5 +27,7 @@ class ClazzEntity (
     @OneToMany(fetch = FetchType.LAZY, cascade = [CascadeType.ALL])
     @JoinColumn(name = "clazz_id")
     @OrderBy("id ASC")
-    private val methodList: Collection<MethodEntity>? = null
+    val methodList: Collection<MethodEntity>? = null
+
+
 }

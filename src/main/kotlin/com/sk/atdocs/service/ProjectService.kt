@@ -12,4 +12,5 @@ interface ProjectService {
     fun searchList(reqDto: SearchListReqDto, pageable: Pageable): Page<ProjectDto>?
     fun save(reqDto: ProjectDto): Long?
     fun delete(projectId: Long): Long?
+    fun searchListWithoutPage(): ArrayList<ProjectDto>?
 }

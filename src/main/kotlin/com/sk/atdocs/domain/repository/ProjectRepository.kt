@@ -12,7 +12,6 @@ import java.util.*
 @Repository
 interface ProjectRepository : PagingAndSortingRepository<ProjectEntity, Long>, JpaSpecificationExecutor<ProjectEntity> {
 
-
     fun findByProjectName(projectName:String): Optional<ProjectEntity>
 
     fun findByProjectNameLike(projectName: String, pageable: Pageable): Page<ProjectEntity>

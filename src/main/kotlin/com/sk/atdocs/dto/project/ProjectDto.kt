@@ -13,11 +13,11 @@ data class ProjectDto(
 ){
     // 추가 생성자 (projectEntity)
     constructor(projectEntity: ProjectEntity) : this (
-        projectEntity.id,
-        projectEntity.projectName,
-        projectEntity.packageName,
-        DateUtils.convertLocalDateTimeToString(projectEntity.createdDateTime, "yyyy-MM-dd"),
-        DateUtils.convertLocalDateTimeToString(projectEntity.modifiedDateTime, "yyyy-MM-dd"),
-        projectEntity.snapshotList!!.size
+            projectEntity.id,
+            projectEntity.projectName,
+            projectEntity.packageName,
+            DateUtils.convertLocalDateTimeToString(projectEntity.createdDateTime, "yyyy-MM-dd"),
+            DateUtils.convertLocalDateTimeToString(projectEntity.modifiedDateTime, "yyyy-MM-dd"),
+            projectEntity.snapshotList!!.size
     )
 }
