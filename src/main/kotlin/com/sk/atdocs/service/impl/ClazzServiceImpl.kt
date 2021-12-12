@@ -7,6 +7,7 @@ import com.sk.atdocs.domain.entity.ClazzEntity
 import com.sk.atdocs.domain.entity.SnapshotEntity
 import com.sk.atdocs.domain.repository.ClazzAnnotationRepository
 import com.sk.atdocs.domain.repository.ClazzRepository
+import com.sk.atdocs.dto.clazz.ClazzDeatailDto
 import com.sk.atdocs.dto.clazz.ClazzDto
 import com.sk.atdocs.dto.clazz.SearchListReqDto
 import com.sk.atdocs.service.ClazzService
@@ -78,6 +79,13 @@ class ClazzServiceImpl(
         }
     }
 
+    /*
+     * 클래스상세 화면에서 호출한 클래스 상세 조회 API
+     */
+    @Transactional(readOnly = true)
+    override fun searchDetail(id: Long): ClazzDeatailDto? {
+         return ClazzDeatailDto(clazzRepository.findById(id).get())
+    }
 
 
 }
