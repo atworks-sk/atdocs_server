@@ -23,6 +23,9 @@ class ClazzEntity (
     // Clazz size
     var line : Long = line
 
+    @ManyToOne
+    val clazzTypeCd: CodeEntity? = null
+
     // Snapshot info
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "snapshot_id")

@@ -1,9 +1,10 @@
 package com.sk.atdocs.app.initializer
 
+import com.sk.atdocs.app.enum.CodeGroup
+import com.sk.atdocs.domain.entity.CodeEntity
 import com.sk.atdocs.domain.entity.ProjectEntity
-import com.sk.atdocs.domain.entity.SnapshotEntity
+import com.sk.atdocs.domain.repository.CodeRepository
 import com.sk.atdocs.domain.repository.ProjectRepository
-import com.sk.atdocs.service.SnapshotService
 import mu.KotlinLogging
 import org.springframework.stereotype.Component
 import javax.annotation.PostConstruct
@@ -16,16 +17,36 @@ private val logger = KotlinLogging.logger {  }
  */
 @Component(value = "AppInitializer")
 class AppInitializer(
-    var projectRepository : ProjectRepository
+    var projectRepository : ProjectRepository,
+    var codeRepository : CodeRepository
 ) {
 
     @PostConstruct
     fun postConstruct() {
-        if(projectRepository.findById(1L).isPresent){
-           return
+        if(!projectRepository.findById(1L).isPresent){
+            projectRepository.save(ProjectEntity("atWorks - 테스트 자동화 시스템", "com.skcc.atworks"))
         }
-        projectRepository.save(ProjectEntity("atWorks - 테스트 자동화 시스템", "com.skcc.atworks"))
-        projectRepository.save(ProjectEntity("SFTM - 짝퉁 NTM", "com.skcc.sftm"))
 
+        getCodeList()?.let { saveCode(it) }
+    }
+
+    fun saveCode( codeList : List<CodeEntity> ) {
+        codeList.forEach { codeEntity: CodeEntity? ->
+            if(codeRepository.findByCodeGroupAndCodeKey(codeEntity!!.codeGroup, codeEntity!!.codeKey)!!.isEmpty){
+                codeRepository.save(CodeEntity(
+                        CodeGroup.valueOf(codeEntity.codeGroup!!),
+                        codeEntity.codeKey!!,
+                        codeEntity.codeName!!
+                ))
+            }
+        }
+    }
+
+    fun getCodeList(): List<CodeEntity>? {
+        val codeList: MutableList<CodeEntity> = ArrayList<CodeEntity>()
+        // reg_cd
+        codeList.add(CodeEntity(CodeGroup.CLAZZ_TYPE, "Controller", "Controller"))
+        codeList.add(CodeEntity(CodeGroup.CLAZZ_TYPE, "Data", "Data"))
+        return codeList
     }
 }

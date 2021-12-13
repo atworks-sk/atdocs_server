@@ -52,7 +52,7 @@ class SnapshotServiceImpl(
 
         var snapshot = snapshotRepository.save(SnapshotEntity(project))
         getDirectory(rootdir, snapshot, "CLASS")
-        getDirectory(rootdir, snapshot, "METHOD")
+//        getDirectory(rootdir, snapshot, "METHOD")
         return false
     }
 
@@ -73,11 +73,40 @@ class SnapshotServiceImpl(
             if(file.isDirectory){
                 getDirectory(file, snapshot, type)
             }
-            else if("CLASS" == type){
-                setClazzInfo(file, snapshot)
-            }
-            else if("METHOD" == type){
+            else {
+
+                val fileName = file.name
+                var clazzName = fileName.substring(0, fileName.lastIndexOf("."))
+                val ext = fileName.substring(fileName.lastIndexOf(".") + 1)
+
+                if( "java" != ext){
+                    snapshotErrorRepository.save(
+                            SnapshotErrorEntity(
+                                    snapshot,
+                                    SnapshotErrorCode.ERROR_NOT_JAVA_FILE,
+                                    file.absolutePath
+                            )
+                    )
+                    return
+                }
+
+                val cu = StaticJavaParser.parse(file)
+                if(cu.packageDeclaration.isEmpty){
+                    snapshotErrorRepository.save(
+                            SnapshotErrorEntity(
+                                    snapshot,
+                                    SnapshotErrorCode.ERROR_FAIL_PARSE,
+                                    file.absolutePath
+                            )
+                    )
+                    return
+                }
+                if("CLASS" == type){
+                    setClazzInfo(cu, snapshot)
+                }
+                else if("METHOD" == type){
 //                setMethoInfo(file, snapshot)
+                }
             }
         }
     }
@@ -85,48 +114,48 @@ class SnapshotServiceImpl(
     /*
      * Clazz 정보 등록
      */
-    private fun setClazzInfo(file:File, snapshot: SnapshotEntity) {
+    private fun setClazzInfo(cu:CompilationUnit, snapshot: SnapshotEntity) {
 
-        val fileName = file.name
-        var clazzName = fileName.substring(0, fileName.lastIndexOf("."))
-        val ext = fileName.substring(fileName.lastIndexOf(".") + 1)
+        val packageName = cu.packageDeclaration?.get()?.nameAsString
+        var line = cu.range.get().end.line.toLong()
 
-        if(!"java".equals(ext)){
-            snapshotErrorRepository.save(
-                SnapshotErrorEntity(
-                    snapshot,
-                    SnapshotErrorCode.ERROR_NOT_JAVA_FILE,
-                    file.absolutePath
+        var clazzName = cu.types[0]?.name.toString()
+        var clazz = clazzService.saveClazz(
+                ClazzEntity(snapshot, packageName!!, clazzName, line )
+        )
+
+        cu.types.forEach { type ->
+            // clazz annotation 정보 등록
+            type.annotations.forEach { annotation ->
+                var param1 = if(annotation.childNodes.size > 1) annotation.childNodes.get(1).toString() else ""
+                var param2 = if(annotation.childNodes.size > 2) annotation.childNodes.get(2).toString() else ""
+                var annotationName = annotation.name.toString()
+                clazzService.saveClazzAnnotation(
+                        ClazzAnnotationEntity(
+                                clazz.snapshot,
+                                clazz,
+                                annotation.tokenRange.get().toString(),
+                                annotationName,
+                                param1,
+                                param2
+                        )
                 )
-            )
-            return
-        }
-
-        logger.info { "클래스 명 : " + file.absolutePath}
-        try {
-            val cu = StaticJavaParser.parse(file)
-            val packageName = cu.packageDeclaration.orElseThrow {
-                RuntimeException("클래스 명 : " + file.absolutePath + File.separator + file.name)
-            }.nameAsString
-            var line = cu.range.get().end.line.toLong()
-            var clazz = clazzService.saveClazz(ClazzEntity(snapshot, packageName, clazzName, line ))
-        }
-        catch (e : RuntimeException ){
-            snapshotErrorRepository.save(
-                SnapshotErrorEntity(
-                    snapshot,
-                    SnapshotErrorCode.ERROR_FAIL_PARSE,
-                    file.absolutePath
-                )
-            )
-            return
+                if("RestController" == annotationName || "Controller" == annotationName){
+//                    clazz.clazzName = ""
+                }
+            }
         }
     }
 
     /*
      * 클래스 상세 정보 세팅
      */
-//    private fun setMethoInfo(file:File, snapshot: SnapshotEntity) {
+    private fun setMethoInfo(file:File, snapshot: SnapshotEntity) {
+        val fileName = file.name
+        var clazzName = fileName.substring(0, fileName.lastIndexOf("."))
+        val ext = fileName.substring(fileName.lastIndexOf(".") + 1)
+
+    }
     fun setClazzDetailInfo(cu: CompilationUnit, clazz: ClazzEntity) {
         cu.types.forEach { type ->
 
