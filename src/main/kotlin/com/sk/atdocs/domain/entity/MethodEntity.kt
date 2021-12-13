@@ -6,6 +6,7 @@ import javax.persistence.*
 class MethodEntity (
     methodName:String,
     accessSpecifier:String,
+    line : Long,
     fullContents:String,
     snapshot:SnapshotEntity,
     clazz:ClazzEntity
@@ -21,6 +22,8 @@ class MethodEntity (
 
     // 접근 제어자 (public, private, protect)
     var accessSpecifier : String = accessSpecifier
+
+    var line : Long = line
 
     // 메서드 전체 내용
     @Lob

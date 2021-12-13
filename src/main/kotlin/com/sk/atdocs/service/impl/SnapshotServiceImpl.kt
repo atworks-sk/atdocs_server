@@ -90,10 +90,11 @@ class SnapshotServiceImpl(
             return
         }
         val cu = StaticJavaParser.parse(file)
-        val packageName = cu.packageDeclaration.orElseThrow { RuntimeException() }
-
+        val packageName = cu.packageDeclaration.orElseThrow { RuntimeException() }.nameAsString
+        var line = cu.range.get().end.line.toLong()
+//        logger.info { "프로젝트 라인수 -> " + .toString() }
         // 클래스 등록
-        var clazz = clazzService.saveClazz(ClazzEntity(snapshot, packageName.toString(), clazzName))
+        var clazz = clazzService.saveClazz(ClazzEntity(snapshot, packageName, clazzName, line ))
 
         // 클래스 상세 정보 세팅
         this.setClazzDetailInfo(cu, clazz)
@@ -111,6 +112,7 @@ class SnapshotServiceImpl(
                     MethodEntity(
                         method.nameAsString,
                         method.accessSpecifier.toString(),
+                        method.range.get().end.line.toLong()-method.range.get().begin.line.toLong(),
                         method.toString(),
                         clazz.snapshot,
                         clazz

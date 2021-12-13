@@ -7,6 +7,7 @@ import com.sk.atdocs.domain.entity.ProjectEntity
 data class ClazzDto (
     var id : Long?,
     var clazzName: String,
+    var line : Long,
     var packageName: String,
     var projectName : String,
     var createDateTime: String?,
@@ -16,6 +17,7 @@ data class ClazzDto (
     constructor(clazzEntity: ClazzEntity) : this (
             clazzEntity.id,
             clazzEntity.clazzName,
+            clazzEntity.line,
             clazzEntity.packageName,
             clazzEntity.snapshot!!.project!!.projectName,
             DateUtils.convertLocalDateTimeToString(clazzEntity.createdDateTime),

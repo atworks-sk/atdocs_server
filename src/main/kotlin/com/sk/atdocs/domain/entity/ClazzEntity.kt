@@ -6,7 +6,8 @@ import javax.persistence.*
 class ClazzEntity (
     snapshot:SnapshotEntity,
     packageName: String,
-    clazzName: String
+    clazzName: String,
+    line : Long
 ) : BaseTimeEntity() {
 
     @Id
@@ -18,6 +19,9 @@ class ClazzEntity (
 
     // Clazz Name
     var clazzName :String = clazzName
+
+    // Clazz size
+    var line : Long = line
 
     // Snapshot info
     @ManyToOne(fetch = FetchType.LAZY)
