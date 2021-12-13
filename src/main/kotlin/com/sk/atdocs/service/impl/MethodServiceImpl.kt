@@ -1,18 +1,12 @@
 package com.sk.atdocs.service.impl
 
-import com.sk.atdocs.domain.entity.ClazzEntity
 import com.sk.atdocs.domain.entity.MethodEntity
-import com.sk.atdocs.domain.entity.SampleEntity
-import com.sk.atdocs.domain.repository.ClazzRepository
+import com.sk.atdocs.domain.entity.MethodArgsEntity
+import com.sk.atdocs.domain.repository.MethodArgsRepository
 import com.sk.atdocs.domain.repository.MethodRepository
-import com.sk.atdocs.domain.repository.SampleRepository
-import com.sk.atdocs.dto.clazz.ClazzDto
 import com.sk.atdocs.dto.method.MethodDto
 import com.sk.atdocs.dto.method.SearchListReqDto
-import com.sk.atdocs.dto.sample.SampleDto
-import com.sk.atdocs.service.ClazzService
 import com.sk.atdocs.service.MethodService
-import com.sk.atdocs.service.SampleService
 
 import mu.KotlinLogging
 import org.springframework.data.domain.Page
@@ -24,7 +18,8 @@ import org.springframework.transaction.annotation.Transactional
 private val logger = KotlinLogging.logger {  }
 @Service
 class MethodServiceImpl(
-    var methodRepository: MethodRepository
+    var methodRepository: MethodRepository,
+    var methodArgsRepository: MethodArgsRepository
 ): MethodService {
 
     /*
@@ -33,6 +28,15 @@ class MethodServiceImpl(
     override fun createMethod(methodEntity: MethodEntity): MethodEntity {
         return methodRepository.save(methodEntity)
     }
+
+    /*
+     * 스냅샷 생성시에 호출하는 메서드 파라메터 등록 함수
+     */
+    override fun createMethodParam(methodArgsEntity: MethodArgsEntity): MethodArgsEntity {
+        return methodArgsRepository.save(methodArgsEntity)
+    }
+
+
 
     /*
      * 메서드 리스트 조회 (pageable)

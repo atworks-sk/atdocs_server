@@ -27,7 +27,7 @@ spring:
     database-platform: org.hibernate.dialect.PostgreSQLDialect
     generate-ddl: false
     open-in-view: false
-    show-sql: true
+    show-sql: false
     hibernate:
       ddl-auto: create
     properties:

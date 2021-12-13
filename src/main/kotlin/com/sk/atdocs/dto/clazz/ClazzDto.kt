@@ -22,5 +22,6 @@ data class ClazzDto (
             clazzEntity.snapshot!!.project!!.projectName,
             DateUtils.convertLocalDateTimeToString(clazzEntity.createdDateTime),
             clazzEntity.methodList!!.size
+//        clazzEntity.methodList!!.stream().
     )
 }

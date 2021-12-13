@@ -7,10 +7,7 @@ import com.github.javaparser.ast.body.MethodDeclaration
 import com.github.javaparser.ast.stmt.SwitchStmt
 import com.github.javaparser.ast.visitor.GenericVisitorAdapter
 import com.github.javaparser.ast.visitor.VoidVisitorAdapter
-import com.sk.atdocs.domain.entity.ClazzAnnotationEntity
-import com.sk.atdocs.domain.entity.ClazzEntity
-import com.sk.atdocs.domain.entity.MethodEntity
-import com.sk.atdocs.domain.entity.SnapshotEntity
+import com.sk.atdocs.domain.entity.*
 import com.sk.atdocs.domain.repository.MethodRepository
 import com.sk.atdocs.domain.repository.SnapshotRepository
 import com.sk.atdocs.service.ClazzService
@@ -35,6 +32,8 @@ class SnapshotServiceImpl(
      * 자바 소스를 분석/번역 시스템
      */
     override fun CreateSnapshot(path: String, projectId: Long): Boolean {
+
+
         logger.info { "Project Id : " + projectId }
         val rootdir = File(path)
         if(!rootdir.exists()){
@@ -86,24 +85,35 @@ class SnapshotServiceImpl(
         val ext = fileName.substring(fileName.lastIndexOf(".") + 1)
 
         if(!"java".equals(ext)){
-            TODO("애러 건으로 처리")
+            logger.info { "클래스 명 (오류) : " + file.absolutePath}
             return
         }
-        val cu = StaticJavaParser.parse(file)
-        val packageName = cu.packageDeclaration.orElseThrow { RuntimeException() }.nameAsString
-        var line = cu.range.get().end.line.toLong()
-//        logger.info { "프로젝트 라인수 -> " + .toString() }
-        // 클래스 등록
-        var clazz = clazzService.saveClazz(ClazzEntity(snapshot, packageName, clazzName, line ))
 
-        // 클래스 상세 정보 세팅
-        this.setClazzDetailInfo(cu, clazz)
+
+        logger.info { "클래스 명 : " + file.absolutePath}
+
+
+        try {
+            val cu = StaticJavaParser.parse(file)
+            val packageName = cu.packageDeclaration.orElseThrow {
+                RuntimeException("클래스 명 : " + file.absolutePath + File.separator + file.name)
+            }.nameAsString
+            var line = cu.range.get().end.line.toLong()
+//        logger.info { "프로젝트 라인수 -> " + .toString() }
+            // 클래스 등록
+            var clazz = clazzService.saveClazz(ClazzEntity(snapshot, packageName, clazzName, line ))
+
+        }
+        catch (e : RuntimeException ){
+            logger.info { "클래스 명 (오류) : " + file.absolutePath}
+            return
+        }
     }
 
     /*
      * 클래스 상세 정보 세팅
      */
-    public fun setClazzDetailInfo(cu: CompilationUnit, clazz: ClazzEntity) {
+    fun setClazzDetailInfo(cu: CompilationUnit, clazz: ClazzEntity) {
         cu.types.forEach { type ->
 
             //Method 정보 등록
@@ -117,11 +127,19 @@ class SnapshotServiceImpl(
                         clazz.snapshot,
                         clazz
                     )
-                );
+                )
 
                 // method parameter 정보
                 method.parameters.forEach{parameter ->
-                    logger.info { "파라메터 " +  parameter.getNameAsString() }
+
+//                    methodService.createMethodParam(
+//                        MethodParamEntity(
+//                            parameter.typeAsString,
+//                            parameter.nameAsString,
+//                            clazz.snapshot,
+//                            methodEntity
+//                        )
+//                    )
                 }
 
 
