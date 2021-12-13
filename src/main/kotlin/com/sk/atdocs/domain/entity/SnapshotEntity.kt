@@ -16,6 +16,15 @@ class SnapshotEntity (project: ProjectEntity) : BaseTimeEntity() {
     @JoinColumn(name = "project_id")
     val project : ProjectEntity? = project
 
+
+    // 스냅샷 애러 리스트
+    @OneToMany(fetch = FetchType.LAZY, cascade = [CascadeType.ALL])
+    @JoinColumn(name = "snapshot_id")
+    @OrderBy("id ASC")
+    private val snapshotErrorList: Collection<SnapshotErrorEntity>? = null
+
+
+
     // 클래스 리스트
     @OneToMany(fetch = FetchType.LAZY, cascade = [CascadeType.ALL])
     @JoinColumn(name = "snapshot_id")

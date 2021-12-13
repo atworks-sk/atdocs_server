@@ -7,8 +7,10 @@ import com.github.javaparser.ast.body.MethodDeclaration
 import com.github.javaparser.ast.stmt.SwitchStmt
 import com.github.javaparser.ast.visitor.GenericVisitorAdapter
 import com.github.javaparser.ast.visitor.VoidVisitorAdapter
+import com.sk.atdocs.app.exception.SnapshotErrorCode
 import com.sk.atdocs.domain.entity.*
 import com.sk.atdocs.domain.repository.MethodRepository
+import com.sk.atdocs.domain.repository.SnapshotErrorRepository
 import com.sk.atdocs.domain.repository.SnapshotRepository
 import com.sk.atdocs.service.ClazzService
 import com.sk.atdocs.service.MethodService
@@ -23,6 +25,7 @@ private val logger = KotlinLogging.logger {  }
 @Service
 class SnapshotServiceImpl(
     var snapshotRepository: SnapshotRepository,
+    var snapshotErrorRepository : SnapshotErrorRepository,
     var projectService: ProjectService,
     var clazzService: ClazzService,
     var methodService: MethodService
@@ -48,14 +51,15 @@ class SnapshotServiceImpl(
         logger.info { "프로젝트 명 : " + project.projectName }
 
         var snapshot = snapshotRepository.save(SnapshotEntity(project))
-        getDirectory(rootdir, snapshot)
+        getDirectory(rootdir, snapshot, "CLASS")
+        getDirectory(rootdir, snapshot, "METHOD")
         return false
     }
 
     /*
      * directory search
      */
-    fun getDirectory(dir:File, snapshot: SnapshotEntity) {
+    fun getDirectory(dir:File, snapshot: SnapshotEntity, type : String) {
 
         if( !dir.exists() || dir.isFile) {
             return
@@ -67,10 +71,13 @@ class SnapshotServiceImpl(
 
         files.forEach { file: File ->
             if(file.isDirectory){
-                getDirectory(file, snapshot)
+                getDirectory(file, snapshot, type)
             }
-            else{
+            else if("CLASS" == type){
                 setClazzInfo(file, snapshot)
+            }
+            else if("METHOD" == type){
+//                setMethoInfo(file, snapshot)
             }
         }
     }
@@ -85,27 +92,33 @@ class SnapshotServiceImpl(
         val ext = fileName.substring(fileName.lastIndexOf(".") + 1)
 
         if(!"java".equals(ext)){
-            logger.info { "클래스 명 (오류) : " + file.absolutePath}
+            snapshotErrorRepository.save(
+                SnapshotErrorEntity(
+                    snapshot,
+                    SnapshotErrorCode.ERROR_NOT_JAVA_FILE,
+                    file.absolutePath
+                )
+            )
             return
         }
 
-
         logger.info { "클래스 명 : " + file.absolutePath}
-
-
         try {
             val cu = StaticJavaParser.parse(file)
             val packageName = cu.packageDeclaration.orElseThrow {
                 RuntimeException("클래스 명 : " + file.absolutePath + File.separator + file.name)
             }.nameAsString
             var line = cu.range.get().end.line.toLong()
-//        logger.info { "프로젝트 라인수 -> " + .toString() }
-            // 클래스 등록
             var clazz = clazzService.saveClazz(ClazzEntity(snapshot, packageName, clazzName, line ))
-
         }
         catch (e : RuntimeException ){
-            logger.info { "클래스 명 (오류) : " + file.absolutePath}
+            snapshotErrorRepository.save(
+                SnapshotErrorEntity(
+                    snapshot,
+                    SnapshotErrorCode.ERROR_FAIL_PARSE,
+                    file.absolutePath
+                )
+            )
             return
         }
     }
@@ -113,6 +126,7 @@ class SnapshotServiceImpl(
     /*
      * 클래스 상세 정보 세팅
      */
+//    private fun setMethoInfo(file:File, snapshot: SnapshotEntity) {
     fun setClazzDetailInfo(cu: CompilationUnit, clazz: ClazzEntity) {
         cu.types.forEach { type ->
 
