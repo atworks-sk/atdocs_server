@@ -6,7 +6,7 @@ import javax.persistence.*
 @Entity
 @Table(name = "TB_CODE")
 class CodeEntity (
-        codeGroup: CodeGroup,
+        codeGroup: String,
         codeKey: String,
         codeName : String
 ) : BaseTimeEntity() {
@@ -17,7 +17,7 @@ class CodeEntity (
 
     @NotNull
     @Column(name = "cd_gp")
-    val codeGroup: String? = codeGroup.codeGroup
+    val codeGroup: String? = codeGroup
 
     @NotNull
     @Column(name = "cd_key")

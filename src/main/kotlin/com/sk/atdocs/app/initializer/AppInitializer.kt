@@ -1,6 +1,6 @@
 package com.sk.atdocs.app.initializer
 
-import com.sk.atdocs.app.enum.CodeGroup
+//import com.sk.atdocs.app.enum.CodeGroup
 import com.sk.atdocs.domain.entity.CodeEntity
 import com.sk.atdocs.domain.entity.ProjectEntity
 import com.sk.atdocs.domain.repository.CodeRepository
@@ -33,11 +33,7 @@ class AppInitializer(
     fun saveCode( codeList : List<CodeEntity> ) {
         codeList.forEach { codeEntity: CodeEntity? ->
             if(codeRepository.findByCodeGroupAndCodeKey(codeEntity!!.codeGroup, codeEntity!!.codeKey)!!.isEmpty){
-                codeRepository.save(CodeEntity(
-                        CodeGroup.valueOf(codeEntity.codeGroup!!),
-                        codeEntity.codeKey!!,
-                        codeEntity.codeName!!
-                ))
+                codeRepository.save(codeEntity)
             }
         }
     }
@@ -45,8 +41,11 @@ class AppInitializer(
     fun getCodeList(): List<CodeEntity>? {
         val codeList: MutableList<CodeEntity> = ArrayList<CodeEntity>()
         // reg_cd
-        codeList.add(CodeEntity(CodeGroup.CLAZZ_TYPE, "Controller", "Controller"))
-        codeList.add(CodeEntity(CodeGroup.CLAZZ_TYPE, "Data", "Data"))
+        codeList.add(CodeEntity("clazzType", "Controller", "Controller"))
+        codeList.add(CodeEntity("clazzType", "Data", "Data"))
+        codeList.add(CodeEntity("clazzType", "Repository", "Repository"))  // JPA TABLE
+        codeList.add(CodeEntity("clazzType", "Entity", "Entity"))  // JPA TABLE
+
         return codeList
     }
 }

@@ -2,20 +2,12 @@ package com.sk.atdocs.service.impl
 
 import com.github.javaparser.StaticJavaParser
 import com.github.javaparser.ast.CompilationUnit
-import com.github.javaparser.ast.Node
-import com.github.javaparser.ast.body.MethodDeclaration
-import com.github.javaparser.ast.stmt.SwitchStmt
-import com.github.javaparser.ast.visitor.GenericVisitorAdapter
-import com.github.javaparser.ast.visitor.VoidVisitorAdapter
+import com.sk.atdocs.app.enum.CodeGroup
 import com.sk.atdocs.app.exception.SnapshotErrorCode
 import com.sk.atdocs.domain.entity.*
-import com.sk.atdocs.domain.repository.MethodRepository
 import com.sk.atdocs.domain.repository.SnapshotErrorRepository
 import com.sk.atdocs.domain.repository.SnapshotRepository
-import com.sk.atdocs.service.ClazzService
-import com.sk.atdocs.service.MethodService
-import com.sk.atdocs.service.ProjectService
-import com.sk.atdocs.service.SnapshotService
+import com.sk.atdocs.service.*
 import mu.KotlinLogging
 import org.springframework.stereotype.Service
 import java.io.File
@@ -28,7 +20,8 @@ class SnapshotServiceImpl(
     var snapshotErrorRepository : SnapshotErrorRepository,
     var projectService: ProjectService,
     var clazzService: ClazzService,
-    var methodService: MethodService
+    var methodService: MethodService,
+    var codeService: CodeService
 ):SnapshotService {
 
     /*
@@ -36,15 +29,12 @@ class SnapshotServiceImpl(
      */
     override fun CreateSnapshot(path: String, projectId: Long): Boolean {
 
-
-        logger.info { "Project Id : " + projectId }
+        // TODO 이내용을 커스터마이징으로 뺴야될것 같습니다.
         val rootdir = File(path)
         if(!rootdir.exists()){
             logger.error { rootdir.absolutePath + " 존재하지 않습니다." }
         }
-        else if(!rootdir.isDirectory){
-            logger.error { rootdir.absolutePath + " 는 directory가 아닙니다." }
-        }
+
 
         // Snapshot 생성합니다.
         var project = projectService.findById(projectId)
@@ -52,8 +42,25 @@ class SnapshotServiceImpl(
 
         var snapshot = snapshotRepository.save(SnapshotEntity(project))
         getDirectory(rootdir, snapshot, "CLASS")
-//        getDirectory(rootdir, snapshot, "METHOD")
+        getDirectory(rootdir, snapshot, "METHOD")
         return false
+    }
+
+
+    private fun updateSnapshotError(snapshot : SnapshotEntity, snapshotErrorCode : SnapshotErrorCode, filePath : String) {
+
+        if(snapshotErrorRepository.findBySnapshotAndFilePath(snapshot, filePath)?.isEmpty == true){
+            snapshotErrorRepository.save(
+                SnapshotErrorEntity(
+                    snapshot,
+                    snapshotErrorCode,
+                    filePath
+                )
+            )
+        }
+
+
+
     }
 
     /*
@@ -80,31 +87,32 @@ class SnapshotServiceImpl(
                 val ext = fileName.substring(fileName.lastIndexOf(".") + 1)
 
                 if( "java" != ext){
-                    snapshotErrorRepository.save(
-                            SnapshotErrorEntity(
-                                    snapshot,
-                                    SnapshotErrorCode.ERROR_NOT_JAVA_FILE,
-                                    file.absolutePath
-                            )
+                    // 동일한 SNAPSHOT, FILE 은 1번식만 들어가게 처리함
+                    updateSnapshotError(
+                        snapshot,
+                        SnapshotErrorCode.ERROR_NOT_JAVA_FILE,
+                        file.absolutePath
                     )
+
                     return
                 }
 
                 val cu = StaticJavaParser.parse(file)
                 if(cu.packageDeclaration.isEmpty){
-                    snapshotErrorRepository.save(
-                            SnapshotErrorEntity(
-                                    snapshot,
-                                    SnapshotErrorCode.ERROR_FAIL_PARSE,
-                                    file.absolutePath
-                            )
+                    updateSnapshotError(
+                        snapshot,
+                        SnapshotErrorCode.ERROR_FAIL_PARSE,
+                        file.absolutePath
                     )
                     return
                 }
                 if("CLASS" == type){
-                    setClazzInfo(cu, snapshot)
+                    setClazzInfo(cu, snapshot, clazzName)
                 }
                 else if("METHOD" == type){
+
+//                    setMethodInfo(cu, clazz)
+
 //                setMethoInfo(file, snapshot)
                 }
             }
@@ -114,23 +122,24 @@ class SnapshotServiceImpl(
     /*
      * Clazz 정보 등록
      */
-    private fun setClazzInfo(cu:CompilationUnit, snapshot: SnapshotEntity) {
+    private fun setClazzInfo(cu:CompilationUnit, snapshot: SnapshotEntity, clazzName : String) {
 
         val packageName = cu.packageDeclaration?.get()?.nameAsString
         var line = cu.range.get().end.line.toLong()
 
-        var clazzName = cu.types[0]?.name.toString()
         var clazz = clazzService.saveClazz(
                 ClazzEntity(snapshot, packageName!!, clazzName, line )
         )
 
+        var annotationList: ArrayList<ClazzAnnotationEntity> =  ArrayList<ClazzAnnotationEntity>()
         cu.types.forEach { type ->
             // clazz annotation 정보 등록
             type.annotations.forEach { annotation ->
                 var param1 = if(annotation.childNodes.size > 1) annotation.childNodes.get(1).toString() else ""
                 var param2 = if(annotation.childNodes.size > 2) annotation.childNodes.get(2).toString() else ""
                 var annotationName = annotation.name.toString()
-                clazzService.saveClazzAnnotation(
+                annotationList.add(
+                    clazzService.saveClazzAnnotation(
                         ClazzAnnotationEntity(
                                 clazz.snapshot,
                                 clazz,
@@ -139,21 +148,48 @@ class SnapshotServiceImpl(
                                 param1,
                                 param2
                         )
+                    )
                 )
-                if("RestController" == annotationName || "Controller" == annotationName){
-//                    clazz.clazzName = ""
-                }
             }
         }
+
+
+        // TODO 이부분 추후 커스터마이징 영역으로 제외해야됩니다.
+        var controller = annotationList.filter {
+            it.annotationName == "RestController" || it.annotationName == "Controller"
+        }
+        var repository =  annotationList.filter {
+            it.annotationName == "Repository"
+        }
+        var entity =  annotationList.filter {
+            it.annotationName == "Entity"
+        }
+        var data =  annotationList.filter {
+            it.annotationName == "Data" || it.annotationName == "Getter"
+        }
+
+        if(!controller.isNullOrEmpty()){
+            clazz.clazzTypeCd = codeService.findByCode(CodeGroup.CLAZZ_TYPE.value, "Controller")
+        }
+        else if(!repository.isNullOrEmpty()){
+            clazz.clazzTypeCd = codeService.findByCode(CodeGroup.CLAZZ_TYPE.value, "Repository")
+        }
+        else if(!entity.isNullOrEmpty()){
+            clazz.clazzTypeCd = codeService.findByCode(CodeGroup.CLAZZ_TYPE.value, "Entity")
+        }
+        else if(!data.isNullOrEmpty()){
+            clazz.clazzTypeCd = codeService.findByCode(CodeGroup.CLAZZ_TYPE.value, "Data")
+        }
+
+        clazzService.saveClazz(clazz)
     }
 
     /*
      * 클래스 상세 정보 세팅
      */
-    private fun setMethoInfo(file:File, snapshot: SnapshotEntity) {
-        val fileName = file.name
-        var clazzName = fileName.substring(0, fileName.lastIndexOf("."))
-        val ext = fileName.substring(fileName.lastIndexOf(".") + 1)
+    private fun setMethodInfo(cu: CompilationUnit, clazz: ClazzEntity) {
+//        val fileName = file.name
+//        var clazzName = fileName.substring(0, fileName.lastIndexOf("."))
 
     }
     fun setClazzDetailInfo(cu: CompilationUnit, clazz: ClazzEntity) {

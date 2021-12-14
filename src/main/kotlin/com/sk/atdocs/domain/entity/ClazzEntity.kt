@@ -24,7 +24,7 @@ class ClazzEntity (
     var line : Long = line
 
     @ManyToOne
-    val clazzTypeCd: CodeEntity? = null
+    var clazzTypeCd: CodeEntity? = null
 
     // Snapshot info
     @ManyToOne(fetch = FetchType.LAZY)
@@ -37,4 +37,8 @@ class ClazzEntity (
     val methodList: Collection<MethodEntity>? = null
 
 
+    @OneToMany(fetch = FetchType.LAZY, cascade = [CascadeType.ALL])
+    @JoinColumn(name = "clazz_id")
+    @OrderBy("id ASC")
+    val annotationList: Collection<ClazzAnnotationEntity>? = null
 }
