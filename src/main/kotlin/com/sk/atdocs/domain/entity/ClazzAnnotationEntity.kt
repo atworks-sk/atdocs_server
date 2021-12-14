@@ -26,6 +26,7 @@ class ClazzAnnotationEntity (
     @JoinColumn(name = "clazz_id")
     val clazz : ClazzEntity = clazz
 
+
     // 전체 표현식
     @Column(length = 1000)
     val expression : String = expression
@@ -34,10 +35,10 @@ class ClazzAnnotationEntity (
     @Column(length = 1000)
     val annotationName : String = annotationName
 
-
     // param1
     @Column(length = 1000)
     val param1 : String? = param1
+
     // param2
     @Column(length = 1000)
     val param2 : String? = param2

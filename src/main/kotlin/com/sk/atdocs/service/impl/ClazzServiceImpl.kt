@@ -4,8 +4,10 @@ import com.sk.atdocs.app.exception.CommonException
 import com.sk.atdocs.app.exception.ErrorCode
 import com.sk.atdocs.domain.entity.ClazzAnnotationEntity
 import com.sk.atdocs.domain.entity.ClazzEntity
+import com.sk.atdocs.domain.entity.ClazzImportEntity
 import com.sk.atdocs.domain.entity.SnapshotEntity
 import com.sk.atdocs.domain.repository.ClazzAnnotationRepository
+import com.sk.atdocs.domain.repository.ClazzImportRepository
 import com.sk.atdocs.domain.repository.ClazzRepository
 import com.sk.atdocs.dto.clazz.ClazzDeatailDto
 import com.sk.atdocs.dto.clazz.ClazzDto
@@ -17,6 +19,7 @@ import org.springframework.data.domain.Pageable
 import org.springframework.data.jpa.domain.Specification
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
+import java.util.*
 
 private val logger = KotlinLogging.logger {  }
 
@@ -26,7 +29,8 @@ private val logger = KotlinLogging.logger {  }
 @Service
 class ClazzServiceImpl(
     var clazzRepository: ClazzRepository,
-    var clazzAnnotationRepository: ClazzAnnotationRepository
+    var clazzAnnotationRepository: ClazzAnnotationRepository,
+    var clazzImportRepository: ClazzImportRepository
 ): ClazzService {
 
     /*
@@ -41,6 +45,10 @@ class ClazzServiceImpl(
      */
     override fun saveClazzAnnotation(clazzAnnotationEntity: ClazzAnnotationEntity): ClazzAnnotationEntity {
         return clazzAnnotationRepository.save(clazzAnnotationEntity)
+    }
+
+    override fun saveClazzImport(clazzImportEntity: ClazzImportEntity): ClazzImportEntity {
+        return clazzImportRepository.save(clazzImportEntity)
     }
 
     /*
@@ -87,5 +95,16 @@ class ClazzServiceImpl(
          return ClazzDeatailDto(clazzRepository.findById(id).get())
     }
 
+    override fun searchClazzByFilePath(snapshotEntity: SnapshotEntity, filePath: String): Optional<ClazzEntity>? {
+        return clazzRepository.findBySnapshotAndFilePath(snapshotEntity, filePath)
+    }
+
+    override fun searchClazzById(id: Long): Optional<ClazzEntity>? {
+        return clazzRepository.findById(id)
+    }
+
+    override fun searchClazzByClazzFullName(snapshotEntity: SnapshotEntity, clazzFullName: String): Optional<ClazzEntity>? {
+        return clazzRepository.findBySnapshotAndClazzFullName(snapshotEntity, clazzFullName)
+    }
 
 }

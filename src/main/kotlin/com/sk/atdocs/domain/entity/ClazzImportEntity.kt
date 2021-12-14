@@ -2,14 +2,12 @@ package com.sk.atdocs.domain.entity
 import javax.persistence.*
 
 @Entity
-@Table(name = "TB_CLAZZ_ANNOTATION")
+@Table(name = "TB_CLAZZ_IMPORT")
 class ClazzImportEntity (
     snapshot:SnapshotEntity,
     clazz: ClazzEntity,
-    expression : String,
-    annotationName : String,
-    param1 : String?,
-    param2 : String?
+    clazzImportName : String,
+    importClazz : ClazzEntity?
 ) : BaseTimeEntity() {
 
     @Id
@@ -26,20 +24,17 @@ class ClazzImportEntity (
     @JoinColumn(name = "clazz_id")
     val clazz : ClazzEntity = clazz
 
+    // 클래스 정보
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "import_clazz_id")
+    val importClazz : ClazzEntity? = importClazz
+
+
+
     // 전체 표현식
-    @Column(length = 100)
-    val expression : String = expression
-
-    // name
-    @Column(length = 100)
-    val annotationName : String = annotationName
+    @Column(length = 400)
+    val clazzImportName : String = clazzImportName
 
 
-    // param1
-    @Column(length = 100)
-    val param1 : String? = param1
-    // param2
-    @Column(length = 100)
-    val param2 : String? = param2
 
 }

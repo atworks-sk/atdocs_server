@@ -2,11 +2,14 @@ package com.sk.atdocs.service
 
 import com.sk.atdocs.domain.entity.ClazzAnnotationEntity
 import com.sk.atdocs.domain.entity.ClazzEntity
+import com.sk.atdocs.domain.entity.ClazzImportEntity
+import com.sk.atdocs.domain.entity.SnapshotEntity
 import com.sk.atdocs.dto.clazz.ClazzDeatailDto
 import com.sk.atdocs.dto.clazz.ClazzDto
 import com.sk.atdocs.dto.clazz.SearchListReqDto
 import org.springframework.data.domain.Page
 import org.springframework.data.domain.Pageable
+import java.util.*
 
 
 interface ClazzService {
@@ -17,7 +20,20 @@ interface ClazzService {
     // SanpshotService에서 호출하는 class annotation 생성 메서드
     fun saveClazzAnnotation(clazzAnnotationEntity: ClazzAnnotationEntity) : ClazzAnnotationEntity
 
+    // SanpshotService에서 호출하는 class annotation 생성 메서드
+    fun saveClazzImport(clazzImportEntity: ClazzImportEntity) : ClazzImportEntity
+
     fun searchList(reqDto: SearchListReqDto, pageable: Pageable): Page<ClazzDto>?
 
     fun searchDetail(id: Long): ClazzDeatailDto?
+
+    // SanpshotService에서 등록된 clazz 객체를 구함
+    fun searchClazzByFilePath( snapshotEntity: SnapshotEntity, fullPath : String ) : Optional<ClazzEntity>?
+
+    fun searchClazzById( id : Long ) : Optional<ClazzEntity>?
+
+    fun searchClazzByClazzFullName( snapshotEntity: SnapshotEntity, clazzFullName : String ) : Optional<ClazzEntity>?
+
+
+
 }
