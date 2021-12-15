@@ -24,7 +24,6 @@ data class MethodDto (
             methodEntity.clazz.clazzName,
             methodEntity.clazz.packageName,
             methodEntity.snapshot.project!!.projectName,
-
             DateUtils.convertLocalDateTimeToString(methodEntity.createdDateTime)
     )
 }

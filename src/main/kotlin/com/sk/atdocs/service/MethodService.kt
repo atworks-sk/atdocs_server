@@ -9,9 +9,9 @@ import org.springframework.data.domain.Pageable
 
 interface MethodService {
     // SanpshotService에서 호출하는 Metho 생성 메서드
-    fun createMethod(methodEntity: MethodEntity) : MethodEntity
+//    fun createMethod(methodEntity: MethodEntity) : MethodEntity
 
-    fun createMethodParam(methodArgsEntity: MethodArgsEntity): MethodArgsEntity
+//    fun createMethodParam(methodArgsEntity: MethodArgsEntity): MethodArgsEntity
 
     fun searchList(reqDto: SearchListReqDto, pageable: Pageable): Page<MethodDto>?
 

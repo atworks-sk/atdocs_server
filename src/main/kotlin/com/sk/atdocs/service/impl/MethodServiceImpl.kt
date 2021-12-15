@@ -23,22 +23,6 @@ class MethodServiceImpl(
 ): MethodService {
 
     /*
-     * 스냅샷 생성시에 호출하는 메서드 등록 함수
-     */
-    override fun createMethod(methodEntity: MethodEntity): MethodEntity {
-        return methodRepository.save(methodEntity)
-    }
-
-    /*
-     * 스냅샷 생성시에 호출하는 메서드 파라메터 등록 함수
-     */
-    override fun createMethodParam(methodArgsEntity: MethodArgsEntity): MethodArgsEntity {
-        return methodArgsRepository.save(methodArgsEntity)
-    }
-
-
-
-    /*
      * 메서드 리스트 조회 (pageable)
      */
     @Transactional(readOnly = true)

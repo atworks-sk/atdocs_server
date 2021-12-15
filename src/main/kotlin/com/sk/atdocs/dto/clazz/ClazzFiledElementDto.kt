@@ -12,7 +12,7 @@ data class ClazzFiledElementDto (
 
     // 추가 생성자 (피호출)
     constructor(clazzFiledElementEntity: ClazzFiledElementEntity) : this (
-        if(clazzFiledElementEntity.elementClazz == null) 0 else clazzFiledElementEntity.id,
+        if(clazzFiledElementEntity.elementClazz == null) 0 else clazzFiledElementEntity.elementClazz?.id,
         clazzFiledElementEntity.elementName,
         clazzFiledElementEntity.elementDepth
     )
