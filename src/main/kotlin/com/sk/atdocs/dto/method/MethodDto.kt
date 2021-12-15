@@ -13,6 +13,7 @@ data class MethodDto (
     var clazzName: String?,
     var packageName: String?,
     var projectName : String?,
+    var fullContents : String?,
     var createDateTime: String?
 ){
     // 추가 생성자 (projectEntity)
@@ -24,6 +25,7 @@ data class MethodDto (
             methodEntity.clazz.clazzName,
             methodEntity.clazz.packageName,
             methodEntity.snapshot.project!!.projectName,
+            methodEntity.fullContents,
             DateUtils.convertLocalDateTimeToString(methodEntity.createdDateTime)
     )
 }
