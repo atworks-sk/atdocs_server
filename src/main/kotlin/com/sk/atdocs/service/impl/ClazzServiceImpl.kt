@@ -2,11 +2,9 @@ package com.sk.atdocs.service.impl
 
 import com.sk.atdocs.app.exception.CommonException
 import com.sk.atdocs.app.exception.ErrorCode
-import com.sk.atdocs.domain.entity.ClazzAnnotationEntity
-import com.sk.atdocs.domain.entity.ClazzEntity
-import com.sk.atdocs.domain.entity.ClazzImportEntity
-import com.sk.atdocs.domain.entity.SnapshotEntity
+import com.sk.atdocs.domain.entity.*
 import com.sk.atdocs.domain.repository.ClazzAnnotationRepository
+import com.sk.atdocs.domain.repository.ClazzFiledRepository
 import com.sk.atdocs.domain.repository.ClazzImportRepository
 import com.sk.atdocs.domain.repository.ClazzRepository
 import com.sk.atdocs.dto.clazz.ClazzDeatailDto
@@ -30,7 +28,8 @@ private val logger = KotlinLogging.logger {  }
 class ClazzServiceImpl(
     var clazzRepository: ClazzRepository,
     var clazzAnnotationRepository: ClazzAnnotationRepository,
-    var clazzImportRepository: ClazzImportRepository
+    var clazzImportRepository: ClazzImportRepository,
+    var clazzFiledRepository: ClazzFiledRepository
 ): ClazzService {
 
     /*
@@ -43,13 +42,15 @@ class ClazzServiceImpl(
     /*
      * SanpshotService에서 호출하는 class annotation 생성 메서드
      */
-    override fun saveClazzAnnotation(clazzAnnotationEntity: ClazzAnnotationEntity): ClazzAnnotationEntity {
-        return clazzAnnotationRepository.save(clazzAnnotationEntity)
-    }
+//    override fun saveClazzAnnotation(clazzAnnotationEntity: ClazzAnnotationEntity): ClazzAnnotationEntity {
+//        return clazzAnnotationRepository.save(clazzAnnotationEntity)
+//    }
+//
+//    override fun saveClazzImport(clazzImportEntity: ClazzImportEntity): ClazzImportEntity {
+//        return clazzImportRepository.save(clazzImportEntity)
+//    }
 
-    override fun saveClazzImport(clazzImportEntity: ClazzImportEntity): ClazzImportEntity {
-        return clazzImportRepository.save(clazzImportEntity)
-    }
+
 
     /*
      * 클래스 화면에서 호출한 클래스 리스트 조회 API

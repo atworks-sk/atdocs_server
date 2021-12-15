@@ -25,5 +25,7 @@ class SnapshotErrorEntity (
     var code : String? = errorCode!!.code
     var message : String? = errorCode!!.message
 
+
+    @Column(length = 1000)
     var filePath : String? = filePath
 }

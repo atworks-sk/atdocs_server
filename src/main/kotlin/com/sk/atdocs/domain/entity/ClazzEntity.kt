@@ -47,24 +47,32 @@ class ClazzEntity (
     @OneToMany(fetch = FetchType.LAZY, cascade = [CascadeType.ALL])
     @JoinColumn(name = "clazz_id")
     @OrderBy("id ASC")
-    val methodList: Collection<MethodEntity>? = null
+    val methodList: MutableList<MethodEntity>? = ArrayList()
 
     // 클래스 어노테이션 리스트
     @OneToMany(fetch = FetchType.LAZY, cascade = [CascadeType.ALL])
     @JoinColumn(name = "clazz_id")
     @OrderBy("id ASC")
-    val annotationList: Collection<ClazzAnnotationEntity>? = null
+    val annotationList: MutableList<ClazzAnnotationEntity>? = ArrayList()
 
     // 클래스에서 임포트한 타 클래스
     @OneToMany(fetch = FetchType.LAZY, cascade = [CascadeType.ALL])
     @JoinColumn(name = "clazz_id")
     @OrderBy("id ASC")
-    val importList: Collection<ClazzImportEntity>? = null
+    val importList: MutableList<ClazzImportEntity>? =  ArrayList()
 
     // 타 클래스에서 현재 클래스를 임포트한 정보
     @OneToMany(fetch = FetchType.LAZY, cascade = [CascadeType.ALL])
     @JoinColumn(name = "import_clazz_id")
     @OrderBy("id ASC")
-    val importClazzList: Collection<ClazzImportEntity>? = null
+    val importClazzList: MutableList<ClazzImportEntity>? = ArrayList()
+
+
+    // 클래스에서 전역변수
+    @OneToMany(fetch = FetchType.LAZY, cascade = [CascadeType.ALL])
+    @JoinColumn(name = "clazz_id")
+    @OrderBy("id ASC")
+    val filedList: MutableList<ClazzFiledEntity>? = ArrayList()
+
 
 }

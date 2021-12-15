@@ -1,4 +1,5 @@
 package com.sk.atdocs.domain.entity
+import com.sk.atdocs.app.util.StringUtils
 import javax.persistence.*
 
 @Entity
@@ -29,12 +30,13 @@ class ClazzImportEntity (
     @JoinColumn(name = "import_clazz_id")
     val importClazz : ClazzEntity? = importClazz
 
-
-
     // 전체 표현식
     @Column(length = 400)
     val clazzImportName : String = clazzImportName
 
+    var packageName : String = StringUtils.getFilePath(clazzImportName, ".")
+
+    val clazzName : String = StringUtils.getFileName(clazzImportName, ".")
 
 
 }
