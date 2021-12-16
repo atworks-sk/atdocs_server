@@ -2,6 +2,7 @@ package com.sk.atdocs.service
 
 import com.sk.atdocs.domain.entity.MethodEntity
 import com.sk.atdocs.domain.entity.MethodArgsEntity
+import com.sk.atdocs.dto.method.MethodDetailDto
 import com.sk.atdocs.dto.method.MethodDto
 import com.sk.atdocs.dto.method.SearchListReqDto
 import org.springframework.data.domain.Page
@@ -15,5 +16,5 @@ interface MethodService {
 
     fun searchList(reqDto: SearchListReqDto, pageable: Pageable): Page<MethodDto>?
 
-
+    fun searchDetail(id: Long): MethodDetailDto?
 }

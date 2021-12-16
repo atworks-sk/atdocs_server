@@ -10,11 +10,13 @@ import com.sk.atdocs.domain.repository.ClazzRepository
 import com.sk.atdocs.dto.clazz.ClazzDeatailDto
 import com.sk.atdocs.dto.clazz.ClazzDto
 import com.sk.atdocs.dto.clazz.SearchListReqDto
+import com.sk.atdocs.dto.method.MethodDetailDto
 import com.sk.atdocs.service.ClazzService
 import mu.KotlinLogging
 import org.springframework.data.domain.Page
 import org.springframework.data.domain.Pageable
 import org.springframework.data.jpa.domain.Specification
+import org.springframework.data.repository.findByIdOrNull
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 import java.util.*
@@ -93,7 +95,8 @@ class ClazzServiceImpl(
      */
     @Transactional(readOnly = true)
     override fun searchDetail(id: Long): ClazzDeatailDto? {
-         return ClazzDeatailDto(clazzRepository.findById(id).get())
+        val clazzEntity = clazzRepository.findByIdOrNull(id) ?: throw CommonException(ErrorCode.ERROR_FAIL_SEARCH)
+        return ClazzDeatailDto(clazzEntity)
     }
 
     override fun searchClazzByFilePath(snapshotEntity: SnapshotEntity, filePath: String): Optional<ClazzEntity>? {

@@ -1,9 +1,12 @@
 package com.sk.atdocs.service.impl
 
+import com.sk.atdocs.app.exception.CommonException
+import com.sk.atdocs.app.exception.ErrorCode
 import com.sk.atdocs.domain.entity.MethodEntity
 import com.sk.atdocs.domain.entity.MethodArgsEntity
 import com.sk.atdocs.domain.repository.MethodArgsRepository
 import com.sk.atdocs.domain.repository.MethodRepository
+import com.sk.atdocs.dto.method.MethodDetailDto
 import com.sk.atdocs.dto.method.MethodDto
 import com.sk.atdocs.dto.method.SearchListReqDto
 import com.sk.atdocs.service.MethodService
@@ -12,6 +15,7 @@ import mu.KotlinLogging
 import org.springframework.data.domain.Page
 import org.springframework.data.domain.Pageable
 import org.springframework.data.jpa.domain.Specification
+import org.springframework.data.repository.findByIdOrNull
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 
@@ -55,5 +59,14 @@ class MethodServiceImpl(
         }
     }
 
+    /*
+    * 매서드 상세 검색
+    */
+    @Transactional(readOnly = true)
+    override fun searchDetail(id: Long): MethodDetailDto? {
+
+        val methodEntity = methodRepository.findByIdOrNull(id) ?: throw CommonException(ErrorCode.ERROR_FAIL_SEARCH)
+        return MethodDetailDto(methodEntity)
+    }
 
 }

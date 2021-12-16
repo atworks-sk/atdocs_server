@@ -27,6 +27,9 @@ class ClazzController (
         return ResponseEntity.ok(clazzService.searchList(reqDto, pageable))
     }
 
+    /*
+     * clazz Detail search
+     */
     @GetMapping("searchDetail/{id}")
     fun searchDetail(@PathVariable id : Long) : ResponseEntity<ClazzDeatailDto>{
         return ResponseEntity.ok(clazzService.searchDetail(id))

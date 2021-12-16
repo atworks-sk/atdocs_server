@@ -1,4 +1,6 @@
 package com.sk.atdocs.controller
+import com.sk.atdocs.dto.clazz.ClazzDeatailDto
+import com.sk.atdocs.dto.method.MethodDetailDto
 import com.sk.atdocs.dto.method.MethodDto
 import com.sk.atdocs.dto.method.SearchListReqDto
 import com.sk.atdocs.service.ClazzService
@@ -20,11 +22,18 @@ class MethodController (
     ) {
 
     /*
-     * clazz List search
+     * method List search
      */
     @GetMapping("/searchList")
     fun searchList(reqDto: SearchListReqDto, pageable: Pageable): ResponseEntity<Page<MethodDto>>{
         return ResponseEntity.ok(methodService.searchList(reqDto, pageable))
     }
 
+    /*
+     * method Detail search
+     */
+    @GetMapping("searchDetail/{id}")
+    fun searchDetail(@PathVariable id : Long) : ResponseEntity<MethodDetailDto>{
+        return ResponseEntity.ok(methodService.searchDetail(id))
+    }
 }
