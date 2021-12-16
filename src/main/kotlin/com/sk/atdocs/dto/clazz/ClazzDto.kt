@@ -17,6 +17,7 @@ data class ClazzDeatailDto (
     var filePath : String,
     var fileName : String,
     var line : Long,
+    var comment : String?,
     var createDateTime: String?,
     var methodList : ArrayList<MethodListDto>?,
     var clazzAnnotationList : ArrayList<ClazzAnnotationDto>,
@@ -35,7 +36,10 @@ data class ClazzDeatailDto (
             StringUtils.getFilePath( clazzEntity.filePath, File.separatorChar.toString()),
             StringUtils.getFileName( clazzEntity.filePath, File.separatorChar.toString()),
             clazzEntity.line,
+            clazzEntity.comment,
             DateUtils.convertLocalDateTimeToString(clazzEntity.createdDateTime),
+
+
             getMethodList(clazzEntity.methodList),
             getClazzAnnotationList(clazzEntity.annotationList),
             getImportedClass(clazzEntity.importClazzList),

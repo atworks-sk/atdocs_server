@@ -35,7 +35,7 @@ class ClazzEntity (
     // 등록시 사용된 full path
     var filePath : String = filePath
 
-    @Column(length = 4000)
+    @Lob
     var comment : String? = comment
 
     @ManyToOne

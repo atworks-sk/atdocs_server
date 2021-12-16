@@ -14,6 +14,7 @@ data class MethodDto (
     var clazzName: String?,
     var packageName: String?,
     var projectName : String?,
+    var comment : String?,
     var createDateTime: String?,
     var methodReturnList : ArrayList<MethodReturnDto>?,
     var methodParamList : ArrayList<MethodParamDto>?
@@ -30,8 +31,12 @@ data class MethodDto (
             methodEntity.clazz.clazzName,
             methodEntity.clazz.packageName,
             methodEntity.snapshot.project!!.projectName,
+            methodEntity.comment,
             DateUtils.convertLocalDateTimeToString(methodEntity.createdDateTime),
+
+            // 매서드 리턴 데이터
             getMethodReturnList(methodEntity.methodReturnList),
+            // 매서드 파라매터 리스트
             getMethodParamList(methodEntity.methodParamList)
 
     )

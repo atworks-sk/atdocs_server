@@ -9,6 +9,7 @@ class MethodEntity (
     returnText : String,
     line : Long,
     fullContents:String,
+    comment:String?,
     snapshot:SnapshotEntity,
     clazz:ClazzEntity
 
@@ -31,6 +32,9 @@ class MethodEntity (
     // 메서드 전체 내용
     @Lob
     var fullContents : String = fullContents
+
+    @Lob
+    var comment : String? = comment
 
     // Snapshot info
     @ManyToOne(fetch = FetchType.LAZY)
