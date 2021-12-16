@@ -75,4 +75,8 @@ class ClazzEntity (
     val filedList: MutableList<ClazzFiledEntity>? = ArrayList()
 
 
+    @OneToMany(fetch = FetchType.LAZY, cascade = [CascadeType.ALL])
+    @JoinColumn(name = "element_clazz_id")
+    @OrderBy("id ASC")
+    val filedElementList : MutableList<ClazzFiledElementEntity>? = ArrayList()
 }
