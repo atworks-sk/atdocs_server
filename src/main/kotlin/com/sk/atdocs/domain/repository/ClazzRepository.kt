@@ -1,9 +1,7 @@
 package com.sk.atdocs.domain.repository
 
 import com.sk.atdocs.domain.entity.ClazzEntity
-import com.sk.atdocs.domain.entity.SampleEntity
 import com.sk.atdocs.domain.entity.SnapshotEntity
-import com.sk.atdocs.domain.entity.SnapshotErrorEntity
 import org.springframework.data.domain.Page
 import org.springframework.data.domain.Pageable
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor

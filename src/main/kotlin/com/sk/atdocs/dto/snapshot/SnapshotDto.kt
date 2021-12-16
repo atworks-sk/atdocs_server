@@ -7,10 +7,24 @@ import com.sk.atdocs.dto.method.getMethodParamList
 import com.sk.atdocs.dto.method.getMethodReturnList
 
 data class SnapshotDto (
-    var id : Long?
+    var id : Long?,
+    var dirPath : String?,
+    var projectName : String?,
+    var clazzCnt : Int?,
+    var methodCnt : Int?,
+    var errorCnt : Int?,
+    var createdDateTime: String?,
+    var modifiedDateTime: String?
 ){
     // 추가 생성자 (MethodEntity)
     constructor(snapshotEntity: SnapshotEntity) : this (
-            snapshotEntity.id!!
+            snapshotEntity.id!!,
+            snapshotEntity.dirPath,
+            snapshotEntity.project?.projectName,
+            snapshotEntity.clazzList?.size,
+            snapshotEntity.methodList?.size,
+            snapshotEntity.snapshotErrorList?.size,
+            DateUtils.convertLocalDateTimeToString(snapshotEntity.createdDateTime),
+            DateUtils.convertLocalDateTimeToString(snapshotEntity.modifiedDateTime)
     )
 }

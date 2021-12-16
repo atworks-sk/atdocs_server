@@ -5,7 +5,7 @@ import javax.persistence.*
 
 @Entity
 @Table(name = "TB_SNAPSHOT")
-class SnapshotEntity (project: ProjectEntity) : BaseTimeEntity() {
+class SnapshotEntity (project: ProjectEntity, dirPath : String) : BaseTimeEntity() {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -23,7 +23,7 @@ class SnapshotEntity (project: ProjectEntity) : BaseTimeEntity() {
     @OrderBy("id ASC")
     val snapshotErrorList: MutableList<SnapshotErrorEntity>? = ArrayList()
 
-
+    var dirPath : String? = dirPath
 
     // 클래스 리스트
     @OneToMany(fetch = FetchType.LAZY, cascade = [CascadeType.ALL])
@@ -38,6 +38,6 @@ class SnapshotEntity (project: ProjectEntity) : BaseTimeEntity() {
     @OneToMany(fetch = FetchType.LAZY, cascade = [CascadeType.ALL])
     @JoinColumn(name = "snapshot_id")
     @OrderBy("id ASC")
-    private val methodList: Collection<MethodEntity>? = null
+    val methodList: Collection<MethodEntity>? = null
 
 }
