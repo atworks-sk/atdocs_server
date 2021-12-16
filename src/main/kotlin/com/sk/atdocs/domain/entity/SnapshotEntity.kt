@@ -21,7 +21,7 @@ class SnapshotEntity (project: ProjectEntity) : BaseTimeEntity() {
     @OneToMany(fetch = FetchType.LAZY, cascade = [CascadeType.ALL])
     @JoinColumn(name = "snapshot_id")
     @OrderBy("id ASC")
-    private val snapshotErrorList: Collection<SnapshotErrorEntity>? = null
+    val snapshotErrorList: MutableList<SnapshotErrorEntity>? = ArrayList()
 
 
 
