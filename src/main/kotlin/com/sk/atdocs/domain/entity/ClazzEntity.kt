@@ -12,7 +12,8 @@ class ClazzEntity (
     packageName: String,
     clazzName: String,
     line : Long,
-    filePath : String
+    filePath : String,
+    comment : String?
 ) : BaseTimeEntity() {
 
     @Id
@@ -33,6 +34,9 @@ class ClazzEntity (
 
     // 등록시 사용된 full path
     var filePath : String = filePath
+
+    @Column(length = 4000)
+    var comment : String? = comment
 
     @ManyToOne
     var clazzTypeCd: CodeEntity? = null
