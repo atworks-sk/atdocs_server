@@ -6,7 +6,5 @@ import org.springframework.data.repository.PagingAndSortingRepository
 import org.springframework.stereotype.Repository
 
 @Repository
-interface MethodArgsRepository : PagingAndSortingRepository<MethodArgsEntity, Long>, JpaSpecificationExecutor<MethodArgsEntity> {
-//    fun findByName(name:String):List<SampleEntity>
-//    fun findAllBy(): List<SampleEntity>
+interface MethodParamRepository : PagingAndSortingRepository<MethodParamEntity, Long>, JpaSpecificationExecutor<MethodParamEntity> {
 }

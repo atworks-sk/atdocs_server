@@ -3,11 +3,10 @@ package com.sk.atdocs.service.impl
 import com.sk.atdocs.app.exception.CommonException
 import com.sk.atdocs.app.exception.ErrorCode
 import com.sk.atdocs.domain.entity.MethodEntity
-import com.sk.atdocs.domain.entity.MethodArgsEntity
-import com.sk.atdocs.domain.repository.MethodArgsRepository
+import com.sk.atdocs.domain.repository.MethodParamRepository
 import com.sk.atdocs.domain.repository.MethodRepository
-import com.sk.atdocs.dto.method.MethodDetailDto
 import com.sk.atdocs.dto.method.MethodDto
+import com.sk.atdocs.dto.method.MethodListDto
 import com.sk.atdocs.dto.method.SearchListReqDto
 import com.sk.atdocs.service.MethodService
 
@@ -23,14 +22,14 @@ private val logger = KotlinLogging.logger {  }
 @Service
 class MethodServiceImpl(
     var methodRepository: MethodRepository,
-    var methodArgsRepository: MethodArgsRepository
+    var methodArgsRepository: MethodParamRepository
 ): MethodService {
 
     /*
      * 메서드 리스트 조회 (pageable)
      */
     @Transactional(readOnly = true)
-    override fun searchList(reqDto: SearchListReqDto, pageable: Pageable): Page<MethodDto>? {
+    override fun searchList(reqDto: SearchListReqDto, pageable: Pageable): Page<MethodListDto>? {
         // project id equal
         fun equalProjectId(projectId: Long?): Specification<MethodEntity> {
             return Specification<MethodEntity> { root, query, builder ->
@@ -55,7 +54,7 @@ class MethodServiceImpl(
                 .and( equalProjectId(reqDto.projectId) )
                 , pageable)
         return entities.map { methodEntity: MethodEntity? ->
-            MethodDto(methodEntity!!)
+            MethodListDto(methodEntity!!)
         }
     }
 
@@ -63,10 +62,10 @@ class MethodServiceImpl(
     * 매서드 상세 검색
     */
     @Transactional(readOnly = true)
-    override fun searchDetail(id: Long): MethodDetailDto? {
+    override fun searchDetail(id: Long): MethodDto? {
 
         val methodEntity = methodRepository.findByIdOrNull(id) ?: throw CommonException(ErrorCode.ERROR_FAIL_SEARCH)
-        return MethodDetailDto(methodEntity)
+        return MethodDto(methodEntity)
     }
 
 }

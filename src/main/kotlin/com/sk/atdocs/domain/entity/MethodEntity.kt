@@ -48,4 +48,10 @@ class MethodEntity (
     @OrderBy("id ASC")
     val methodReturnList: MutableList<MethodReturnEntity>? = ArrayList()
 
+    // 매서드 리턴 데이터
+    @OneToMany(fetch = FetchType.LAZY, cascade = [CascadeType.ALL])
+    @JoinColumn(name = "method_id")
+    @OrderBy("id ASC")
+    val methodParamList: MutableList<MethodParamEntity>? = ArrayList()
+
 }

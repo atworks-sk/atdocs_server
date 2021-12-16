@@ -1,6 +1,6 @@
 package com.sk.atdocs.controller
 import com.sk.atdocs.dto.clazz.ClazzDeatailDto
-import com.sk.atdocs.dto.clazz.ClazzDto
+import com.sk.atdocs.dto.clazz.ClazzListDto
 import com.sk.atdocs.dto.clazz.SearchListReqDto
 import com.sk.atdocs.service.ClazzService
 import mu.KotlinLogging
@@ -8,7 +8,6 @@ import org.springframework.http.ResponseEntity
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.http.HttpStatus
 import org.springframework.web.bind.annotation.*
 
 private val logger = KotlinLogging.logger {  }
@@ -23,7 +22,7 @@ class ClazzController (
      * clazz List search
      */
     @GetMapping("/searchList")
-    fun searchList(reqDto: SearchListReqDto, pageable: Pageable): ResponseEntity<Page<ClazzDto>>{
+    fun searchList(reqDto: SearchListReqDto, pageable: Pageable): ResponseEntity<Page<ClazzListDto>>{
         return ResponseEntity.ok(clazzService.searchList(reqDto, pageable))
     }
 

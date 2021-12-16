@@ -8,9 +8,8 @@ import com.sk.atdocs.domain.repository.ClazzFiledRepository
 import com.sk.atdocs.domain.repository.ClazzImportRepository
 import com.sk.atdocs.domain.repository.ClazzRepository
 import com.sk.atdocs.dto.clazz.ClazzDeatailDto
-import com.sk.atdocs.dto.clazz.ClazzDto
+import com.sk.atdocs.dto.clazz.ClazzListDto
 import com.sk.atdocs.dto.clazz.SearchListReqDto
-import com.sk.atdocs.dto.method.MethodDetailDto
 import com.sk.atdocs.service.ClazzService
 import mu.KotlinLogging
 import org.springframework.data.domain.Page
@@ -58,7 +57,7 @@ class ClazzServiceImpl(
      * 클래스 화면에서 호출한 클래스 리스트 조회 API
      */
     @Transactional(readOnly = true)
-    override fun searchList(reqDto: SearchListReqDto, pageable: Pageable): Page<ClazzDto>? {
+    override fun searchList(reqDto: SearchListReqDto, pageable: Pageable): Page<ClazzListDto>? {
 
         // clazz name like select
         fun likeProjectName(clazzName: String?): Specification<ClazzEntity> {
@@ -86,7 +85,7 @@ class ClazzServiceImpl(
                 , pageable)
 
         return entities.map { clazzEntity: ClazzEntity? ->
-            ClazzDto(clazzEntity!!)
+            ClazzListDto(clazzEntity!!)
         }
     }
 
