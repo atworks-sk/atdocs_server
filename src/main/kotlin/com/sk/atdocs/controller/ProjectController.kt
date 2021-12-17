@@ -37,7 +37,6 @@ class ProjectController (
 
     @DeleteMapping("delete/{id}")
     fun delete(@PathVariable id : Long) : ResponseEntity<HttpStatus>{
-        logger.info { "id -> " + id }
         projectService.delete(id)
         return ResponseEntity<HttpStatus>(HttpStatus.OK)
     }

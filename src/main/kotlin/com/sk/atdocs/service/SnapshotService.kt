@@ -10,6 +10,11 @@ interface SnapshotService {
     // snapshot list search
     fun searchList(reqDto: SearchListReqDto, pageable: Pageable): Page<SnapshotDto>?
 
+    // snapshot 삭제
+    fun deleteSnapshot(id: Long)
+
+
     // snapshot 등록
     fun CreateSnapshot(path: String, projectId: Long) : Boolean
+
 }

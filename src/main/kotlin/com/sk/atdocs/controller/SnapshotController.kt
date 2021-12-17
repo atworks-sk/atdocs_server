@@ -1,17 +1,16 @@
 package com.sk.atdocs.controller
 //import lombok.RequiredArgsConstructor
 //import com.sk.atdocs.dto.method.MethodListDto
+import com.sk.atdocs.dto.snapshot.CreateReqDto
 import com.sk.atdocs.dto.snapshot.SearchListReqDto
 import com.sk.atdocs.dto.snapshot.SnapshotDto
 import com.sk.atdocs.service.SnapshotService
 import mu.KotlinLogging
 import org.springframework.data.domain.Page
 import org.springframework.data.domain.Pageable
+import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
-import org.springframework.web.bind.annotation.GetMapping
-import org.springframework.web.bind.annotation.RequestMapping
-import org.springframework.web.bind.annotation.RequestParam
-import org.springframework.web.bind.annotation.RestController
+import org.springframework.web.bind.annotation.*
 
 private val logger = KotlinLogging.logger {  }
 
@@ -29,10 +28,16 @@ class SnapshotController (
         return ResponseEntity.ok(snapshotService.searchList(reqDto, pageable))
     }
 
-    @GetMapping()
-    fun CreateSnapshot(@RequestParam path: String): ResponseEntity<Boolean> {
-        return ResponseEntity.ok(snapshotService.CreateSnapshot(path, 1L))
+    @PostMapping("/create")
+    fun CreateSnapshot(@RequestBody reqDto: CreateReqDto): ResponseEntity<Boolean> {
+        return ResponseEntity.ok(snapshotService.CreateSnapshot(reqDto.dirPath!!, reqDto.projectId!!))
     }
 
+
+    @DeleteMapping("delete/{id}")
+    fun delete(@PathVariable id : Long) : ResponseEntity<HttpStatus>{
+        snapshotService.deleteSnapshot(id)
+        return ResponseEntity<HttpStatus>(HttpStatus.OK)
+    }
 
 }
