@@ -33,7 +33,6 @@ class SnapshotController (
         return ResponseEntity.ok(snapshotService.CreateSnapshot(reqDto.dirPath!!, reqDto.projectId!!))
     }
 
-
     @DeleteMapping("delete/{id}")
     fun delete(@PathVariable id : Long) : ResponseEntity<HttpStatus>{
         snapshotService.deleteSnapshot(id)

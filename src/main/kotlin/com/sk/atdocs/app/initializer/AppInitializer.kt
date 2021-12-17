@@ -45,6 +45,7 @@ class AppInitializer(
         codeList.add(CodeEntity("clazzType", "Data", "Data"))
         codeList.add(CodeEntity("clazzType", "Repository", "Repository"))  // JPA TABLE
         codeList.add(CodeEntity("clazzType", "Entity", "Entity"))  // JPA TABLE
+        codeList.add(CodeEntity("clazzType", "Interface", "Interface"))  // JPA TABLE
 
         return codeList
     }
