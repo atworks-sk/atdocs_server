@@ -11,6 +11,7 @@ data class ClazzListDto (
     var projectName : String,
     var createDateTime: String,
     var methodCnt: Int?,
+    var fileTypeName : String?,
     var clazzTypeName : String?
 ){
     // 추가 생성자 (projectEntity)
@@ -22,6 +23,7 @@ data class ClazzListDto (
             clazzEntity.snapshot!!.project!!.projectName,
             DateUtils.convertLocalDateTimeToString(clazzEntity.createdDateTime),
             clazzEntity.methodList!!.size,
-            clazzEntity.clazzTypeCd?.codeName ?: "미정의"
+            clazzEntity.fileTypeCd?.codeName ?: "",
+            clazzEntity.clazzTypeCd?.codeName ?: ""
     )
 }

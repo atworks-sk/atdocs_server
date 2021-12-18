@@ -40,12 +40,18 @@ class AppInitializer(
 
     fun getCodeList(): List<CodeEntity>? {
         val codeList: MutableList<CodeEntity> = ArrayList<CodeEntity>()
-        // reg_cd
+        // clazzType
         codeList.add(CodeEntity("clazzType", "Controller", "Controller"))
         codeList.add(CodeEntity("clazzType", "Data", "Data"))
         codeList.add(CodeEntity("clazzType", "Repository", "Repository"))  // JPA TABLE
         codeList.add(CodeEntity("clazzType", "Entity", "Entity"))  // JPA TABLE
         codeList.add(CodeEntity("clazzType", "Interface", "Interface"))  // JPA TABLE
+
+        // fileType
+        codeList.add(CodeEntity("fileType", "Class", "Class"))
+        codeList.add(CodeEntity("fileType", "Interface", "Interface"))
+        codeList.add(CodeEntity("fileType", "Enum", "Enum"))  // JPA TABLE
+
 
         return codeList
     }

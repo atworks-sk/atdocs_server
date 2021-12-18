@@ -38,6 +38,15 @@ class ClazzEntity (
     @Lob
     var comment : String? = comment
 
+    /*
+     * class, interface, enum
+     */
+    @ManyToOne
+    var fileTypeCd : CodeEntity? = null
+
+    /*
+     * customizing type (data, controller, service, dbio 등)
+     */
     @ManyToOne
     var clazzTypeCd: CodeEntity? = null
 
