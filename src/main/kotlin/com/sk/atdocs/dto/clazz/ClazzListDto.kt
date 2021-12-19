@@ -26,4 +26,6 @@ data class ClazzListDto (
             clazzEntity.fileTypeCd?.codeName ?: "",
             clazzEntity.clazzTypeCd?.codeName ?: ""
     )
+
+
 }

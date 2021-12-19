@@ -12,6 +12,7 @@ data class ClazzDeatailDto (
     var id : Long?,
     var clazzName: String,
     var packageName: String,
+    var fileTypeName : String?,
     var clazzTypeName : String?,
     var projectName : String,
     var filePath : String,
@@ -23,15 +24,17 @@ data class ClazzDeatailDto (
     var clazzAnnotationList : ArrayList<ClazzAnnotationDto>,
     var importedClass : ArrayList<ClazzListDto>,
     var importClass: ArrayList<ClazzListDto>,
-    var filedList : ArrayList<ClazzFiledDto>
-//    var filedList : ArrayList<ClazzFiled>
+    var filedList : ArrayList<ClazzFiledDto>,
+    var inheritanceList :  ArrayList<ClazzListDto>,
+    var inheritancedList :  ArrayList<ClazzListDto>
 ){
     // 추가 생성자 (projectEntity)
     constructor(clazzEntity: ClazzEntity) : this (
             clazzEntity.id,
             clazzEntity.clazzName,
             clazzEntity.packageName,
-        clazzEntity.clazzTypeCd?.codeName ?: "N/A",
+            clazzEntity.fileTypeCd?.codeName ?: "",
+            clazzEntity.clazzTypeCd?.codeName ?: "",
             clazzEntity.snapshot!!.project!!.projectName,
             StringUtils.getFilePath( clazzEntity.filePath, File.separatorChar.toString()),
             StringUtils.getFileName( clazzEntity.filePath, File.separatorChar.toString()),
@@ -44,11 +47,36 @@ data class ClazzDeatailDto (
             getClazzAnnotationList(clazzEntity.annotationList),
             getImportedClass(clazzEntity.importClazzList),
             getImportClass(clazzEntity.importList),
-            getFiledList(clazzEntity.filedList)
+            getFiledList(clazzEntity.filedList),
+            getInheritanceListList(clazzEntity.inheritanceList),
+            getInheritancedListList(clazzEntity.inheritanceClazzList),
     )
 
 
 }
+
+fun getInheritanceListList(inheritanceList: Collection<ClazzInheritanceEntity>?): ArrayList<ClazzListDto> {
+    var resList: ArrayList<ClazzListDto> = ArrayList<ClazzListDto>()
+    inheritanceList!!.map {
+        resList.add(ClazzListDto(it.inheritanceClazz!!))
+    }
+    return resList
+}
+
+fun getInheritancedListList(inheritanceClazzList: Collection<ClazzInheritanceEntity>?): ArrayList<ClazzListDto> {
+    var resList: ArrayList<ClazzListDto> = ArrayList<ClazzListDto>()
+    inheritanceClazzList!!.map { it ->
+        if(it.inheritanceClazz != null){
+            it.inheritanceClazz.let {
+                if(it != null){
+                    resList.add( ClazzListDto(it) )
+                }
+            }
+        }
+    }
+    return resList
+}
+
 fun getImportedClass(importClazzList: Collection<ClazzImportEntity>?): ArrayList<ClazzListDto> {
     var resList: ArrayList<ClazzListDto> = ArrayList<ClazzListDto>()
     importClazzList!!.map {
@@ -60,8 +88,6 @@ fun getImportedClass(importClazzList: Collection<ClazzImportEntity>?): ArrayList
 fun getImportClass(importClazzList: Collection<ClazzImportEntity>?): ArrayList<ClazzListDto> {
     var resList: ArrayList<ClazzListDto> = ArrayList<ClazzListDto>()
     importClazzList!!.map { it ->
-//        var packageName : String = StringUtils.getFilePath(it.clazzImportName , ".")
-//        var clazzName : String = StringUtils.getFileName(it.clazzImportName , ".")
         if(it.importClazz != null){
             it.importClazz.let {
                 if(it != null){
@@ -69,7 +95,6 @@ fun getImportClass(importClazzList: Collection<ClazzImportEntity>?): ArrayList<C
                 }
             }
         }
-
     }
     return resList
 }
@@ -99,3 +124,5 @@ fun getClazzAnnotationList( annotationList : Collection<ClazzAnnotationEntity>?)
     }
     return resList
 }
+
+//

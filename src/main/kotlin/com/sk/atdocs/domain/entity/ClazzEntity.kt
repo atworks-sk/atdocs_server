@@ -92,4 +92,17 @@ class ClazzEntity (
     @JoinColumn(name = "element_clazz_id")
     @OrderBy("id ASC")
     val filedElementList : MutableList<ClazzFiledElementEntity>? = ArrayList()
+
+
+    // 클래스에서 임포트한 타 클래스
+    @OneToMany(fetch = FetchType.LAZY, cascade = [CascadeType.ALL])
+    @JoinColumn(name = "clazz_id")
+    @OrderBy("id ASC")
+    val inheritanceList: MutableList<ClazzInheritanceEntity>? =  ArrayList()
+
+    // 타 클래스에서 현재 클래스를 임포트한 정보
+    @OneToMany(fetch = FetchType.LAZY, cascade = [CascadeType.ALL])
+    @JoinColumn(name = "inheritance_clazz_id")
+    @OrderBy("id ASC")
+    val inheritanceClazzList: MutableList<ClazzInheritanceEntity>? = ArrayList()
 }
