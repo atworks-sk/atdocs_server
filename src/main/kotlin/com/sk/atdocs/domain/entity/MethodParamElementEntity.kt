@@ -6,7 +6,8 @@ import javax.persistence.*
 class MethodParamElementEntity (
     snapshot : SnapshotEntity,
     methodParam : MethodParamEntity,
-    elementName : String,
+    elementClazzName : String,
+    elementPackageName : String?,
     elementDepth : Long,
     elementClazz : ClazzEntity?
 ) : BaseTimeEntity() {
@@ -25,8 +26,8 @@ class MethodParamElementEntity (
     @JoinColumn(name = "method_param_id")
     val methodParam : MethodParamEntity = methodParam
 
-    var elementName : String = elementName
-
+    var elementClazzName : String = elementClazzName
+    var elementPackageName : String? = elementPackageName
     var elementDepth : Long = elementDepth
 
     // 스냅샷 정보

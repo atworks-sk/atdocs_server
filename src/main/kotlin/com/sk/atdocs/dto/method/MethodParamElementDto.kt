@@ -10,14 +10,16 @@ import com.sk.atdocs.dto.clazz.ClazzListDto
 data class MethodParamElementDto (
     var id : Long?,
     var elementClazzId : Long?,
-    var elementName : String,
+    var elementClazzName : String,
+    var elementPackageName : String?,
     var elementDepth : Long
 ){
     // 추가 생성자 (MethodEntity)
     constructor(methodParamElementEntity: MethodParamElementEntity) : this (
         methodParamElementEntity.id!!,
         if(methodParamElementEntity.elementClazz == null) 0 else methodParamElementEntity.elementClazz?.id,
-        methodParamElementEntity.elementName,
+        methodParamElementEntity.elementClazzName,
+        methodParamElementEntity.elementPackageName,
         methodParamElementEntity.elementDepth
     )
 }
