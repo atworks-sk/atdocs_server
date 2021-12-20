@@ -6,6 +6,7 @@ import javax.persistence.*
 class MethodReturnEntity (
     snapshot:SnapshotEntity,
     method:MethodEntity,
+    elementText : String?,
     elementName : String,
     elementDepth : Long,
     elementClazz : ClazzEntity?
@@ -29,6 +30,9 @@ class MethodReturnEntity (
     var elementName : String = elementName
 
     var elementDepth : Long = elementDepth
+
+
+    var elementText : String? = elementText
 
     // 스냅샷 정보
     @ManyToOne(fetch = FetchType.LAZY)
