@@ -66,8 +66,8 @@ fun getInheritanceListList(inheritanceList: Collection<ClazzInheritanceEntity>?)
 fun getInheritancedListList(inheritanceClazzList: Collection<ClazzInheritanceEntity>?): ArrayList<ClazzListDto> {
     var resList: ArrayList<ClazzListDto> = ArrayList<ClazzListDto>()
     inheritanceClazzList!!.map { it ->
-        if(it.inheritanceClazz != null){
-            it.inheritanceClazz.let {
+        if(it.clazz != null){
+            it.clazz.let {
                 if(it != null){
                     resList.add( ClazzListDto(it) )
                 }
