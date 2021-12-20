@@ -1,7 +1,7 @@
 package com.sk.atdocs.service
 
 import com.sk.atdocs.domain.entity.*
-import com.sk.atdocs.dto.clazz.ClazzDeatailDto
+import com.sk.atdocs.dto.clazz.ClazzDto
 import com.sk.atdocs.dto.clazz.ClazzListDto
 import com.sk.atdocs.dto.clazz.SearchListReqDto
 import org.springframework.data.domain.Page
@@ -16,7 +16,7 @@ interface ClazzService {
 
     fun searchList(reqDto: SearchListReqDto, pageable: Pageable): Page<ClazzListDto>?
 
-    fun searchDetail(id: Long): ClazzDeatailDto?
+    fun searchDetail(id: Long): ClazzDto?
 
     // SanpshotService에서 등록된 clazz 객체를 구함
     fun searchClazzByFilePath( snapshotEntity: SnapshotEntity, fullPath : String ) : Optional<ClazzEntity>?

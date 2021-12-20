@@ -1,5 +1,5 @@
 package com.sk.atdocs.controller
-import com.sk.atdocs.dto.clazz.ClazzDeatailDto
+import com.sk.atdocs.dto.clazz.ClazzDto
 import com.sk.atdocs.dto.clazz.ClazzListDto
 import com.sk.atdocs.dto.clazz.SearchListReqDto
 import com.sk.atdocs.service.ClazzService
@@ -8,6 +8,7 @@ import org.springframework.http.ResponseEntity
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.http.HttpStatus
 import org.springframework.web.bind.annotation.*
 
 private val logger = KotlinLogging.logger {  }
@@ -30,7 +31,7 @@ class ClazzController (
      * clazz Detail search
      */
     @GetMapping("searchDetail/{id}")
-    fun searchDetail(@PathVariable id : Long) : ResponseEntity<ClazzDeatailDto>{
+    fun searchDetail(@PathVariable id : Long) : ResponseEntity<ClazzDto>{
         return ResponseEntity.ok(clazzService.searchDetail(id))
     }
 }

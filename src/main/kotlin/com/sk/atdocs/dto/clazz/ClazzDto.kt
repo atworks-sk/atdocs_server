@@ -8,7 +8,7 @@ import mu.KotlinLogging
 import java.io.File
 
 private val logger = KotlinLogging.logger {  }
-data class ClazzDeatailDto (
+data class ClazzDto (
     var id : Long?,
     var clazzName: String,
     var packageName: String,
@@ -22,11 +22,11 @@ data class ClazzDeatailDto (
     var createDateTime: String?,
     var methodList : ArrayList<MethodListDto>?,
     var clazzAnnotationList : ArrayList<ClazzAnnotationDto>,
-    var importedClass : ArrayList<ClazzListDto>,
-    var importClass: ArrayList<ClazzListDto>,
+    var importedClass : ArrayList<ClazzTempDto>,
+    var importClass: ArrayList<ClazzTempDto>,
     var filedList : ArrayList<ClazzFiledDto>,
-    var inheritanceList :  ArrayList<ClazzListDto>,
-    var inheritancedList :  ArrayList<ClazzListDto>
+    var inheritanceList :  ArrayList<ClazzTempDto>,
+    var inheritedList :  ArrayList<ClazzTempDto>
 ){
     // 추가 생성자 (projectEntity)
     constructor(clazzEntity: ClazzEntity) : this (
@@ -49,51 +49,80 @@ data class ClazzDeatailDto (
             getImportClass(clazzEntity.importList),
             getFiledList(clazzEntity.filedList),
             getInheritanceListList(clazzEntity.inheritanceList),
-            getInheritancedListList(clazzEntity.inheritanceClazzList),
+            getInheritancedListList(clazzEntity.inheritedList),
     )
 
 
 }
 
-fun getInheritanceListList(inheritanceList: Collection<ClazzInheritanceEntity>?): ArrayList<ClazzListDto> {
-    var resList: ArrayList<ClazzListDto> = ArrayList<ClazzListDto>()
+fun getInheritanceListList(inheritanceList: Collection<ClazzInheritanceEntity>?): ArrayList<ClazzTempDto> {
+    var resList: ArrayList<ClazzTempDto> = ArrayList<ClazzTempDto>()
     inheritanceList!!.map {
-        resList.add(ClazzListDto(it.inheritanceClazz!!))
-    }
-    return resList
-}
+        if(it.inheritanceClazz != null){
+            resList.add(ClazzTempDto(it.inheritanceClazz!!))
+        }
+        else{
+            resList.add(
+                ClazzTempDto(
+                    0,
+                    it.clazzName,
+                    it.packageName,
+                    "".toString(),
+                    "".toString(),
+                    it.snapshot.project!!.projectName
 
-fun getInheritancedListList(inheritanceClazzList: Collection<ClazzInheritanceEntity>?): ArrayList<ClazzListDto> {
-    var resList: ArrayList<ClazzListDto> = ArrayList<ClazzListDto>()
-    inheritanceClazzList!!.map { it ->
-        if(it.clazz != null){
-            it.clazz.let {
-                if(it != null){
-                    resList.add( ClazzListDto(it) )
-                }
-            }
+                )
+            )
         }
     }
     return resList
 }
 
-fun getImportedClass(importClazzList: Collection<ClazzImportEntity>?): ArrayList<ClazzListDto> {
-    var resList: ArrayList<ClazzListDto> = ArrayList<ClazzListDto>()
-    importClazzList!!.map {
-        resList.add(ClazzListDto(it.clazz))
+fun getInheritancedListList(inheritanceClazzList: Collection<ClazzInheritanceEntity>?): ArrayList<ClazzTempDto> {
+    var resList: ArrayList<ClazzTempDto> = ArrayList<ClazzTempDto>()
+    inheritanceClazzList!!.map { it ->
+        if(it.clazz != null){
+            it.clazz.let {
+                if(it != null){
+                    resList.add( ClazzTempDto(it) )
+                }
+            }
+        }
+
     }
     return resList
 }
 
-fun getImportClass(importClazzList: Collection<ClazzImportEntity>?): ArrayList<ClazzListDto> {
-    var resList: ArrayList<ClazzListDto> = ArrayList<ClazzListDto>()
+fun getImportedClass(importClazzList: Collection<ClazzImportEntity>?): ArrayList<ClazzTempDto> {
+    var resList: ArrayList<ClazzTempDto> = ArrayList<ClazzTempDto>()
+    importClazzList!!.map {
+        resList.add(ClazzTempDto(it.clazz))
+    }
+    return resList
+}
+
+fun getImportClass(importClazzList: Collection<ClazzImportEntity>?): ArrayList<ClazzTempDto> {
+    var resList: ArrayList<ClazzTempDto> = ArrayList<ClazzTempDto>()
     importClazzList!!.map { it ->
         if(it.importClazz != null){
             it.importClazz.let {
                 if(it != null){
-                    resList.add( ClazzListDto(it) )
+                    resList.add( ClazzTempDto(it) )
                 }
             }
+        }
+        else{
+            resList.add(
+                ClazzTempDto(
+                    0,
+                    it.clazzName,
+                    it.packageName,
+                    "".toString(),
+                    "".toString(),
+                    it.snapshot.project!!.projectName
+
+                )
+            )
         }
     }
     return resList

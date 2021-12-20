@@ -7,7 +7,7 @@ import com.sk.atdocs.domain.repository.ClazzAnnotationRepository
 import com.sk.atdocs.domain.repository.ClazzFiledRepository
 import com.sk.atdocs.domain.repository.ClazzImportRepository
 import com.sk.atdocs.domain.repository.ClazzRepository
-import com.sk.atdocs.dto.clazz.ClazzDeatailDto
+import com.sk.atdocs.dto.clazz.ClazzDto
 import com.sk.atdocs.dto.clazz.ClazzListDto
 import com.sk.atdocs.dto.clazz.SearchListReqDto
 import com.sk.atdocs.service.ClazzService
@@ -93,9 +93,9 @@ class ClazzServiceImpl(
      * 클래스상세 화면에서 호출한 클래스 상세 조회 API
      */
     @Transactional(readOnly = true)
-    override fun searchDetail(id: Long): ClazzDeatailDto? {
+    override fun searchDetail(id: Long): ClazzDto? {
         val clazzEntity = clazzRepository.findByIdOrNull(id) ?: throw CommonException(ErrorCode.ERROR_FAIL_SEARCH)
-        return ClazzDeatailDto(clazzEntity)
+        return ClazzDto(clazzEntity)
     }
 
     override fun searchClazzByFilePath(snapshotEntity: SnapshotEntity, filePath: String): Optional<ClazzEntity>? {

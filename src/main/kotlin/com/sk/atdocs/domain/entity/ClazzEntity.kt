@@ -104,5 +104,6 @@ class ClazzEntity (
     @OneToMany(fetch = FetchType.LAZY, cascade = [CascadeType.ALL])
     @JoinColumn(name = "inheritance_clazz_id")
     @OrderBy("id ASC")
-    val inheritanceClazzList: MutableList<ClazzInheritanceEntity>? = ArrayList()
+    val inheritedList: MutableList<ClazzInheritanceEntity>? = ArrayList()
+//    val inheritanceClazzList: MutableList<ClazzInheritanceEntity>? = ArrayList()
 }
