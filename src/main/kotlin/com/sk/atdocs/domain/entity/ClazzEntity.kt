@@ -106,4 +106,9 @@ class ClazzEntity (
     @OrderBy("id ASC")
     val inheritedList: MutableList<ClazzInheritanceEntity>? = ArrayList()
 //    val inheritanceClazzList: MutableList<ClazzInheritanceEntity>? = ArrayList()
+
+    @OneToMany(fetch = FetchType.LAZY, cascade = [CascadeType.ALL])
+    @JoinColumn(name = "my_clazz_id")
+    @OrderBy("id ASC")
+    val children: MutableList<MethodFiledTypeEntity>? = ArrayList()
 }

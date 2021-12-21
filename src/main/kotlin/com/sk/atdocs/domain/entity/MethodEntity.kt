@@ -58,4 +58,17 @@ class MethodEntity (
     @OrderBy("id ASC")
     val methodParamList: MutableList<MethodParamEntity>? = ArrayList()
 
+    // 매서드 어노테이션
+    @OneToMany(fetch = FetchType.LAZY, cascade = [CascadeType.ALL])
+    @JoinColumn(name = "method_id")
+    @OrderBy("id ASC")
+    val annotationList: MutableList<MethodAnnotationEntity>? = ArrayList()
+
+    // 메서드 필드 리스트
+    @OneToMany(fetch = FetchType.LAZY, cascade = [CascadeType.ALL])
+    @JoinColumn(name = "method_id")
+    @OrderBy("id ASC")
+    val filedList: MutableList<MethodFiledEntity>? = ArrayList()
+
+
 }
