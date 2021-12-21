@@ -137,7 +137,7 @@ fun getMethodList( methodEntityList : Collection<MethodEntity>?) : ArrayList<Met
     return resList
 }
 
-fun getFiledList( filedEntityList : Collection<ClazzFiledEntity>?) : ArrayList<ClazzFiledDto> {
+fun getFiledList( filedEntityList : Collection<ClazzFieldEntity>?) : ArrayList<ClazzFiledDto> {
     var resList: ArrayList<ClazzFiledDto> = ArrayList<ClazzFiledDto>()
     filedEntityList!!.map {
         resList.add(ClazzFiledDto(it))

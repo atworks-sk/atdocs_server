@@ -6,6 +6,6 @@ import org.springframework.data.repository.PagingAndSortingRepository
 import org.springframework.stereotype.Repository
 
 @Repository
-interface ClazzFiledRepository : PagingAndSortingRepository<ClazzFiledEntity, Long>, JpaSpecificationExecutor<ClazzFiledEntity> {
+interface ClazzFiledRepository : PagingAndSortingRepository<ClazzFieldEntity, Long>, JpaSpecificationExecutor<ClazzFieldEntity> {
 
 }

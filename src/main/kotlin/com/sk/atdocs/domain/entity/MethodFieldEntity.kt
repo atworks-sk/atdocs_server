@@ -2,8 +2,8 @@ package com.sk.atdocs.domain.entity
 import javax.persistence.*
 
 @Entity
-@Table(name = "TB_METHOD_FILED")
-class MethodFiledEntity (
+@Table(name = "TB_METHOD_FIELD")
+class MethodFieldEntity (
     snapshot:SnapshotEntity,
     method: MethodEntity,
     name : String,
@@ -25,11 +25,9 @@ class MethodFiledEntity (
     @JoinColumn(name = "method_id")
     val method : MethodEntity = method
 
-
-    @Column(length = 1000)
     var name : String = name
 
-    @Column(length = 1000)
+    @Column(length = 4000)
     var typeText : String = typeText
 
     @Lob
@@ -39,6 +37,6 @@ class MethodFiledEntity (
     @OneToMany(fetch = FetchType.LAZY, cascade = [CascadeType.ALL])
     @JoinColumn(name = "method_filed_id")
     @OrderBy("id ASC")
-    val typeList: MutableList<MethodFiledTypeEntity>? = ArrayList()
+    val typeList: MutableList<MethodFieldTypeEntity>? = ArrayList()
 
 }

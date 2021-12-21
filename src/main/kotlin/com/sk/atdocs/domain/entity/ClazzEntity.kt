@@ -1,8 +1,5 @@
 package com.sk.atdocs.domain.entity
 import javax.persistence.*
-import javax.persistence.criteria.CriteriaBuilder.Case
-
-
 
 
 @Entity
@@ -85,13 +82,7 @@ class ClazzEntity (
     @OneToMany(fetch = FetchType.LAZY, cascade = [CascadeType.ALL])
     @JoinColumn(name = "clazz_id")
     @OrderBy("id ASC")
-    val filedList: MutableList<ClazzFiledEntity>? = ArrayList()
-
-
-    @OneToMany(fetch = FetchType.LAZY, cascade = [CascadeType.ALL])
-    @JoinColumn(name = "element_clazz_id")
-    @OrderBy("id ASC")
-    val filedElementList : MutableList<ClazzFiledElementEntity>? = ArrayList()
+    val filedList: MutableList<ClazzFieldEntity>? = ArrayList()
 
 
     // 클래스에서 임포트한 타 클래스
@@ -110,5 +101,5 @@ class ClazzEntity (
     @OneToMany(fetch = FetchType.LAZY, cascade = [CascadeType.ALL])
     @JoinColumn(name = "my_clazz_id")
     @OrderBy("id ASC")
-    val children: MutableList<MethodFiledTypeEntity>? = ArrayList()
+    val children: MutableList<MethodFieldTypeEntity>? = ArrayList()
 }

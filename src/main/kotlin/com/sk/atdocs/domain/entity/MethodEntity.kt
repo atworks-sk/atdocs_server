@@ -68,7 +68,7 @@ class MethodEntity (
     @OneToMany(fetch = FetchType.LAZY, cascade = [CascadeType.ALL])
     @JoinColumn(name = "method_id")
     @OrderBy("id ASC")
-    val filedList: MutableList<MethodFiledEntity>? = ArrayList()
+    val filedList: MutableList<MethodFieldEntity>? = ArrayList()
 
 
 }

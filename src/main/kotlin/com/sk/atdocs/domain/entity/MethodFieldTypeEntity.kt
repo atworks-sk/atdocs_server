@@ -2,14 +2,14 @@ package com.sk.atdocs.domain.entity
 import javax.persistence.*
 
 @Entity
-@Table(name = "TB_METHOD_FILED_TYPE")
-class MethodFiledTypeEntity (
+@Table(name = "TB_METHOD_FIELD_TYPE")
+class MethodFieldTypeEntity (
     snapshot:SnapshotEntity,
-    methodFiled :MethodFiledEntity?, // 최상위만 MethodFiledEntity 를 가지고 있습니다.
-    name : String,
-    packagePath : String?,
+    methodFiled :MethodFieldEntity?, // 최상위만 MethodFiledEntity 를 가지고 있습니다.
+    clazzName : String,
+    packageName : String?,
     myClazz : ClazzEntity?,
-    parent : MethodFiledTypeEntity?
+    parent : MethodFieldTypeEntity?
 ) : BaseTimeEntity() {
 
     @Id
@@ -21,15 +21,14 @@ class MethodFiledTypeEntity (
     @JoinColumn(name = "snapshot_id")
     val snapshot : SnapshotEntity = snapshot
 
-
-    // 스냅샷 정보
+    // 메서드 필드 정보
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "method_filed_id")
-    val methodFiled : MethodFiledEntity? = methodFiled
+    val methodFiled : MethodFieldEntity? = methodFiled
 
-    var clazzName : String = name
+    var clazzName : String = clazzName
 
-    var packagePath : String? = packagePath
+    var packageName : String? = packageName
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "my_clazz_id")
@@ -39,12 +38,12 @@ class MethodFiledTypeEntity (
     // 상위 MethodFiledTypeEntity
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "parent_id")
-    var parent : MethodFiledTypeEntity? = parent
+    var parent : MethodFieldTypeEntity? = parent
 
     // 자식 MethodFiledTypeEntity
     @OneToMany(fetch = FetchType.LAZY, cascade = [CascadeType.ALL])
     @JoinColumn(name = "parent_id")
     @OrderBy("id ASC")
-    val children: MutableList<MethodFiledTypeEntity>? = ArrayList()
+    val children: MutableList<MethodFieldTypeEntity>? = ArrayList()
 
 }

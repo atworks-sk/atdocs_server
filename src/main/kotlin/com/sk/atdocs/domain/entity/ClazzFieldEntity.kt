@@ -2,15 +2,17 @@ package com.sk.atdocs.domain.entity
 import javax.persistence.*
 
 @Entity
-@Table(name = "TB_CLAZZ_FILED")
-class ClazzFiledEntity (
+@Table(name = "TB_CLAZZ_FIELD")
+class ClazzFieldEntity (
     snapshot:SnapshotEntity,
     clazz: ClazzEntity,
     accessSpecifier : String,
+    name : String,   
+    typeText : String,
     comment : String?,
-    expression : String,
-    filedName : String
+    fullContents:String
 ) : BaseTimeEntity() {
+
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -26,22 +28,29 @@ class ClazzFiledEntity (
     @JoinColumn(name = "clazz_id")
     val clazz : ClazzEntity = clazz
 
+    // 접근지정자
     var accessSpecifier : String = accessSpecifier
+    
+    // 필드명
+    var name : String = name
 
+    // type text
+    @Column(length = 4000)
+    var typeText : String = typeText
+
+    // 주석
     @Column(length = 4000)
     var comment : String? = comment
 
-    @Column(length = 2000)
-    var expression : String = expression
-
-    @Column(length = 1000)
-    var filedName : String = filedName
+    // 메서드 전체 내용
+    @Lob
+    var fullContents : String = fullContents
 
 
-    // 클래스에서 전역변수
+
     @OneToMany(fetch = FetchType.LAZY, cascade = [CascadeType.ALL])
-    @JoinColumn(name = "clazz_filed_id")
+    @JoinColumn(name = "clazz_field_id")
     @OrderBy("id ASC")
-    val filedElementList: MutableList<ClazzFiledElementEntity>? = ArrayList()
+    val typeList: MutableList<ClazzFieldTypeEntity>? = ArrayList()
 
 }
