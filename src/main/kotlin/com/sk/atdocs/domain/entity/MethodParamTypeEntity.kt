@@ -2,14 +2,14 @@ package com.sk.atdocs.domain.entity
 import javax.persistence.*
 
 @Entity
-@Table(name = "TB_METHOD_RETURN")
-class MethodReturnEntity (
-    snapshot : SnapshotEntity,
-    method : MethodEntity?,
+@Table(name = "TB_METHOD_PARAM_TYPE")
+class MethodParamTypeEntity (
+    snapshot:SnapshotEntity,
+    methodParam :MethodParamEntity?, // 최상위만 MethodFiledEntity 를 가지고 있습니다.
     clazzName : String,
     packageName : String?,
     myClazz : ClazzEntity?,
-    parent : MethodReturnEntity?
+    parent : MethodParamTypeEntity?
 ) : BaseTimeEntity() {
 
     @Id
@@ -21,10 +21,10 @@ class MethodReturnEntity (
     @JoinColumn(name = "snapshot_id")
     val snapshot : SnapshotEntity = snapshot
 
-    // method_id 정보
+    // 메서드 필드 정보
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "method_id")
-    val method : MethodEntity? = method
+    @JoinColumn(name = "method_param_id")
+    val methodParam : MethodParamEntity? = methodParam
 
     var clazzName : String = clazzName
 
@@ -37,12 +37,12 @@ class MethodReturnEntity (
     // 상위 MethodFiledTypeEntity
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "parent_id")
-    var parent : MethodReturnEntity? = parent
+    var parent : MethodParamTypeEntity? = parent
 
     // 자식 MethodFiledTypeEntity
     @OneToMany(fetch = FetchType.LAZY, cascade = [CascadeType.ALL])
     @JoinColumn(name = "parent_id")
     @OrderBy("id ASC")
-    val children: MutableList<MethodReturnEntity>? = ArrayList()
+    val children: MutableList<MethodParamTypeEntity>? = ArrayList()
 
 }

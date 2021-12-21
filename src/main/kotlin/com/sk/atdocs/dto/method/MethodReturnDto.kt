@@ -13,10 +13,10 @@ data class MethodReturnDto (
     var elementDepth : Long
 ){
     // 추가 생성자 (MethodEntity)
-    constructor(methodReturnEntity: MethodReturnEntity) : this (
-        methodReturnEntity.id!!,
-        if(methodReturnEntity.elementClazz == null) 0 else methodReturnEntity.elementClazz?.id,
-        methodReturnEntity.elementName,
-        methodReturnEntity.elementDepth
-    )
+//    constructor(methodReturnEntity: MethodReturnEntity) : this (
+//        methodReturnEntity.id!!,
+//        if(methodReturnEntity.elementClazz == null) 0 else methodReturnEntity.elementClazz?.id,
+//        methodReturnEntity.elementName,
+//        methodReturnEntity.elementDepth
+//    )
 }

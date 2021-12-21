@@ -13,6 +13,7 @@ class ClazzInheritanceEntity (
     clazz: ClazzEntity,
     clazzName : String,
     packageName : String,
+    inheritanceType : CodeEntity,
     inheritanceClazz : ClazzEntity?
 ) : BaseTimeEntity() {
 
@@ -35,6 +36,13 @@ class ClazzInheritanceEntity (
 
     // Clazz Name
     var clazzName :String = clazzName
+
+
+    // 상속 코드 (extend, implement)
+    @ManyToOne
+//    @JoinColumn(name = "inheritance_type")
+    var inheritanceType : CodeEntity = inheritanceType
+
 
     // 상속한 클래스 정보
     @ManyToOne(fetch = FetchType.LAZY)

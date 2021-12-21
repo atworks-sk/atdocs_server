@@ -30,6 +30,7 @@ class ClazzEntity (
     var line : Long = line
 
     // 등록시 사용된 full path
+    @Column(length = 1000)
     var filePath : String = filePath
 
     @Lob

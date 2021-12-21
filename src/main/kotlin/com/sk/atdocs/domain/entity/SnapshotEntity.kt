@@ -23,6 +23,8 @@ class SnapshotEntity (project: ProjectEntity, dirPath : String) : BaseTimeEntity
     @OrderBy("id ASC")
     val snapshotErrorList: MutableList<SnapshotErrorEntity>? = ArrayList()
 
+
+    @Column(length = 1000)
     var dirPath : String? = dirPath
 
     // 클래스 리스트

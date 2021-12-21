@@ -71,4 +71,11 @@ class MethodEntity (
     val filedList: MutableList<MethodFieldEntity>? = ArrayList()
 
 
+    // 호출 메서드 리스
+    @OneToMany(fetch = FetchType.LAZY, cascade = [CascadeType.ALL])
+    @JoinColumn(name = "method_id")
+    @OrderBy("id ASC")
+    val callList: MutableList<MethodCallEntity>? = ArrayList()
+
+
 }

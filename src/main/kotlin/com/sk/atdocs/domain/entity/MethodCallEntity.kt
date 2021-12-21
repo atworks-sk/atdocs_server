@@ -1,40 +1,42 @@
 package com.sk.atdocs.domain.entity
-
 import javax.persistence.*
 
-
 @Entity
-@Table(name = "TB_METHOD_PARAM")
-class MethodParamEntity (
-    snapshot : SnapshotEntity,
-    method : MethodEntity,
+@Table(name = "TB_METHOD_CALL")
+class MethodCallEntity (
+    snapshot:SnapshotEntity,
+    method: MethodEntity,
+    scope : String?,
     name : String,
-    typeText : String
+    argumentCnt : Int
 ) : BaseTimeEntity() {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     var id: Long?=null
 
-    // Snapshot info
+    // 스냅샷 정보
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "snapshot_id")
     val snapshot : SnapshotEntity = snapshot
 
-    // Class Info
+    // 클래스 정보
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "method_id")
     val method : MethodEntity = method
 
+    @Column(length = 999)
+    var scope : String? = scope
+
+    @Column(length = 222)
     var name : String = name
+    var argumentCnt : Int = argumentCnt
 
-    @Column(length = 1000)
-    var typeText : String = typeText
-
-    // 클래스에서 전역변수
+    // 호출 메서드 리스
     @OneToMany(fetch = FetchType.LAZY, cascade = [CascadeType.ALL])
-    @JoinColumn(name = "method_param_id")
+    @JoinColumn(name = "method_call_id")
     @OrderBy("id ASC")
-    val typeList : MutableList<MethodParamTypeEntity>? = ArrayList()
+    val argList: MutableList<MethodCallArgEntity>? = ArrayList()
+
 
 }

@@ -47,8 +47,8 @@ class AppInitializer(
         codeList.add(CodeEntity("fileType", "Enum", "Enum"))  // JPA TABLE
 
         // InheritanceType (implements, extends)
-        codeList.add(CodeEntity("inheritanceType", "implements", "implements"))
-        codeList.add(CodeEntity("inheritanceType", "extends", "extends"))
+        codeList.add(CodeEntity("inheritanceType", "Implements", "Implements"))
+        codeList.add(CodeEntity("inheritanceType", "Extends", "Extends"))
 
         // clazzType
         codeList.add(CodeEntity("clazzType", "Controller", "Controller"))

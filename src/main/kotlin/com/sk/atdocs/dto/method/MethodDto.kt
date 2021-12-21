@@ -50,9 +50,9 @@ data class MethodDto (
 
 fun getMethodReturnList( list: Collection<MethodReturnEntity>?): ArrayList<MethodReturnDto> {
     var resList: ArrayList<MethodReturnDto> = ArrayList<MethodReturnDto>()
-    list!!.map {
-        resList.add(MethodReturnDto(it))
-    }
+//    list!!.map {
+//        resList.add(MethodReturnDto(it))
+//    }
     return resList
 }
 
