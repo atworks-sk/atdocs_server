@@ -7,6 +7,7 @@ import com.sk.atdocs.dto.clazz.SearchListReqDto
 import org.springframework.data.domain.Page
 import org.springframework.data.domain.Pageable
 import java.util.*
+import kotlin.collections.ArrayList
 
 
 interface ClazzService {
@@ -20,6 +21,8 @@ interface ClazzService {
 
     // SanpshotService에서 등록된 clazz 객체를 구함
     fun searchClazzByFilePath( snapshotEntity: SnapshotEntity, fullPath : String ) : Optional<ClazzEntity>?
+
+    fun searchClazzBySnapshot(snapshotEntity: SnapshotEntity) : ArrayList<ClazzEntity>?
 
     fun searchClazzById( id : Long ) : Optional<ClazzEntity>?
 

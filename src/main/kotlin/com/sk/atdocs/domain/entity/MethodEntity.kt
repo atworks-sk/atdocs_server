@@ -78,4 +78,9 @@ class MethodEntity (
     val callList: MutableList<MethodCallEntity>? = ArrayList()
 
 
+    @OneToOne(mappedBy = "method", fetch = FetchType.LAZY, cascade = [CascadeType.ALL])
+    var restApi : RestApiEntity? = null
+
+
+
 }

@@ -8,6 +8,7 @@ import org.springframework.data.jpa.repository.JpaSpecificationExecutor
 import org.springframework.data.repository.PagingAndSortingRepository
 import org.springframework.stereotype.Repository
 import java.util.*
+import kotlin.collections.ArrayList
 
 @Repository
 interface ClazzRepository : PagingAndSortingRepository<ClazzEntity, Long>, JpaSpecificationExecutor<ClazzEntity> {
@@ -15,6 +16,7 @@ interface ClazzRepository : PagingAndSortingRepository<ClazzEntity, Long>, JpaSp
     fun findByClazzNameLike(clazzName : String, pageable: Pageable): Page<ClazzEntity>
 
     fun findBySnapshotAndFilePath(snapshot: SnapshotEntity, filePath: String): Optional<ClazzEntity>?
+    fun findBySnapshot(snapshot: SnapshotEntity): ArrayList<ClazzEntity>?
 
     fun findBySnapshotAndClazzFullName(snapshot: SnapshotEntity, clazzFullName: String): Optional<ClazzEntity>?
 

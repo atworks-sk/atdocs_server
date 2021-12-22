@@ -19,6 +19,7 @@ import org.springframework.data.repository.findByIdOrNull
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 import java.util.*
+import kotlin.collections.ArrayList
 
 private val logger = KotlinLogging.logger {  }
 
@@ -100,6 +101,10 @@ class ClazzServiceImpl(
 
     override fun searchClazzByFilePath(snapshotEntity: SnapshotEntity, filePath: String): Optional<ClazzEntity>? {
         return clazzRepository.findBySnapshotAndFilePath(snapshotEntity, filePath)
+    }
+
+    override fun searchClazzBySnapshot(snapshotEntity: SnapshotEntity): ArrayList<ClazzEntity>? {
+        return clazzRepository.findBySnapshot(snapshotEntity)
     }
 
     override fun searchClazzById(id: Long): Optional<ClazzEntity>? {
