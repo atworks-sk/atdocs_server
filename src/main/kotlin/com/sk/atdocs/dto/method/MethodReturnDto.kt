@@ -8,9 +8,9 @@ import com.sk.atdocs.dto.clazz.ClazzListDto
 
 data class MethodReturnDto (
     var id : Long?,
-    var elementClazzId : Long?,
-    var elementName : String,
-    var elementDepth : Long
+    var clazzId : Long?,
+    var clazzName : String,
+    var packageName : String
 ){
     // 추가 생성자 (MethodEntity)
 //    constructor(methodReturnEntity: MethodReturnEntity) : this (
