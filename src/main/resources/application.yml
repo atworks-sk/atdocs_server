@@ -1,5 +1,7 @@
 server.port: 9760
 spring:
+  profiles: # profiles 설정
+    active: prd # 다른 설정이 없을 때 default 환경 값
   main:
     allow-bean-definition-overriding: true
   application:
@@ -11,7 +13,7 @@ spring:
   datasource:
     hikari:
       driver-class-name: org.postgresql.Driver
-      jdbc-url: jdbc:postgresql://localhost:5432/atdocs
+      jdbc-url: jdbc:postgresql://localhost:5432/atdocs2
       username: atworks
       password: atworks
       connection-timeout: 30000 #maximum number of milliseconds that a client will wait for a connection
