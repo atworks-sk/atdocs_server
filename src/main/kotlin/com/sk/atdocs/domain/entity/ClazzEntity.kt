@@ -1,4 +1,5 @@
 package com.sk.atdocs.domain.entity
+import org.hibernate.annotations.Type
 import javax.persistence.*
 
 
@@ -33,7 +34,7 @@ class ClazzEntity (
     @Column(length = 1000)
     var filePath : String = filePath
 
-    @Lob
+    @Lob @Type(type = "org.hibernate.type.TextType")
     var comment : String? = comment
 
     /*

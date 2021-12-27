@@ -1,4 +1,5 @@
 package com.sk.atdocs.domain.entity
+import org.hibernate.annotations.Type
 import javax.persistence.*
 
 @Entity
@@ -30,7 +31,7 @@ class MethodFieldEntity (
     @Column(length = 4000)
     var typeText : String = typeText
 
-    @Lob
+    @Lob @Type(type = "org.hibernate.type.TextType")
     var initializer : String? = initializer
 
     // 자식 Method

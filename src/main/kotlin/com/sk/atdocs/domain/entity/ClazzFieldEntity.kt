@@ -1,4 +1,5 @@
 package com.sk.atdocs.domain.entity
+import org.hibernate.annotations.Type
 import javax.persistence.*
 
 @Entity
@@ -43,7 +44,7 @@ class ClazzFieldEntity (
     var comment : String? = comment
 
     // 메서드 전체 내용
-    @Lob
+    @Lob @Type(type = "org.hibernate.type.TextType")
     var fullContents : String = fullContents
 
 

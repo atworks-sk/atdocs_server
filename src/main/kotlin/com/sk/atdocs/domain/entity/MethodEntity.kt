@@ -1,4 +1,5 @@
 package com.sk.atdocs.domain.entity
+import org.hibernate.annotations.Type
 import javax.persistence.*
 
 @Entity
@@ -30,10 +31,10 @@ class MethodEntity (
     var line : Long = line
 
     // 메서드 전체 내용
-    @Lob
+    @Lob @Type(type = "org.hibernate.type.TextType")
     var fullContents : String = fullContents
 
-    @Lob
+    @Lob @Type(type = "org.hibernate.type.TextType")
     var comment : String? = comment
 
     // Snapshot info
