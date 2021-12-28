@@ -1,6 +1,5 @@
 package com.sk.atdocs.dto.method
 
-import com.sk.atdocs.domain.entity.MethodParamElementEntity
 import com.sk.atdocs.domain.entity.MethodParamTypeEntity
 
 data class MethodParamTypeDto (
