@@ -48,10 +48,6 @@ class MethodEntity (
     val clazz : ClazzEntity = clazz
 
     // 매서드 리턴 데이터
-//    @OneToMany(fetch = FetchType.LAZY, cascade = [CascadeType.ALL])
-//    @JoinColumn(name = "method_id")
-//    @OrderBy("id ASC")
-//    val List: MutableList<MethodReturnEntity>? = ArrayList()
     @OneToOne(mappedBy = "method", fetch = FetchType.LAZY, cascade = [CascadeType.ALL])
     var methodReturn : MethodReturnEntity? = null
 

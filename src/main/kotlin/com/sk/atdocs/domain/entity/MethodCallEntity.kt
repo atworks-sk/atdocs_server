@@ -25,10 +25,10 @@ class MethodCallEntity (
     @JoinColumn(name = "method_id")
     val method : MethodEntity = method
 
-    @Column(length = 999)
+//    @Column(length = 999)
     var scope : String? = scope
 
-    @Column(length = 222)
+//    @Column(length = 222)
     var name : String = name
     var argumentCnt : Int = argumentCnt
 
