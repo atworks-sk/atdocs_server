@@ -1,33 +1,26 @@
 package com.sk.atdocs.dto.method
 
-import com.sk.atdocs.app.util.DateUtils
 import com.sk.atdocs.domain.entity.*
-import com.sk.atdocs.dto.clazz.ClazzListDto
 
 data class MethodParamDto (
     var id : Long?,
-    var elementText : String,
-    var filedName : String
-//    ,
-//    var comment : String?,
-//    var methodParamElementList : ArrayList<MethodParamElementDto>?
+    var name : String,
+    var typeText : String,
+    var methodParamTypeList : ArrayList<MethodParamTypeDto>?
 ){
     // 추가 생성자 (MethodParamEntity)
     constructor(methodParamEntity: MethodParamEntity) : this (
         methodParamEntity.id!!,
+        methodParamEntity.name,
         methodParamEntity.typeText,
-        methodParamEntity.name
-//        ,
-//        methodParamEntity.name
-//        ,
-//        getMethodParamElementList(methodParamEntity.methodParamElementList)
-//
+        getMethodParamTypeList(methodParamEntity.typeList)
     )
 }
-//fun getMethodParamElementList( list: Collection<MethodParamElementEntity>?): ArrayList<MethodParamElementDto> {
-//    var resList: ArrayList<MethodParamElementDto> = ArrayList<MethodParamElementDto>()
-//    list!!.map {
-//        resList.add(MethodParamElementDto(it))
-//    }
-//    return resList
-//}
+
+private fun getMethodParamTypeList( list: Collection<MethodParamTypeEntity>?): ArrayList<MethodParamTypeDto> {
+    var resList: ArrayList<MethodParamTypeDto> = ArrayList<MethodParamTypeDto>()
+    list!!.map {
+        resList.add(MethodParamTypeDto(it))
+    }
+    return resList
+}

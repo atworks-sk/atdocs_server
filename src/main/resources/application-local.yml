@@ -13,7 +13,7 @@ spring:
   datasource:
     hikari:
       driver-class-name: org.postgresql.Driver
-      jdbc-url: jdbc:postgresql://localhost:5432/atdocs2
+      jdbc-url: jdbc:postgresql://localhost:5432/atdocs
       username: atworks
       password: atworks
       connection-timeout: 30000 #maximum number of milliseconds that a client will wait for a connection
@@ -29,7 +29,7 @@ spring:
     open-in-view: false
     show-sql: false
     hibernate:
-      ddl-auto: create
+      ddl-auto: update
     properties:
       hibernate.query.in_clause_parameter_padding: true
       hibernate.query.plan_cache_max_size: 64

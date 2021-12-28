@@ -5,6 +5,7 @@ import com.sk.atdocs.domain.entity.MethodEntity
 import com.sk.atdocs.domain.entity.MethodParamEntity
 import com.sk.atdocs.domain.entity.MethodReturnEntity
 
+// Mehtod 상세 이력 조회
 data class MethodDto (
     var id : Long?,
     var methodName : String?,
@@ -19,7 +20,7 @@ data class MethodDto (
     var comment : String?,
     var fullContents : String?,
     var createDateTime: String?,
-    var methodReturnList : ArrayList<MethodReturnDto>?,
+    var methodReturn : MethodReturnDto?,
     var methodParamList : ArrayList<MethodParamDto>?
 ){
 //    var methodList : ArrayList<MethodDto>?,
@@ -41,22 +42,25 @@ data class MethodDto (
             DateUtils.convertLocalDateTimeToString(methodEntity.createdDateTime),
 
             // 매서드 리턴 데이터
-            getMethodReturnList(methodEntity.methodReturnList),
+//            MethodReturnDto(if(methodEntity.methodReturn == null ) ),
+            getMethodReturn(methodEntity.methodReturn),
             // 매서드 파라매터 리스트
             getMethodParamList(methodEntity.methodParamList)
 
     )
+
+
+
+
+}
+private fun getMethodReturn(methodReturn: MethodReturnEntity?): MethodReturnDto? {
+
+    if(methodReturn == null)
+        return null
+    return MethodReturnDto(methodReturn)
 }
 
-fun getMethodReturnList( list: Collection<MethodReturnEntity>?): ArrayList<MethodReturnDto> {
-    var resList: ArrayList<MethodReturnDto> = ArrayList<MethodReturnDto>()
-//    list!!.map {
-//        resList.add(MethodReturnDto(it))
-//    }
-    return resList
-}
-
-fun getMethodParamList( list: Collection<MethodParamEntity>?): ArrayList<MethodParamDto> {
+private fun getMethodParamList( list: Collection<MethodParamEntity>?): ArrayList<MethodParamDto> {
     var resList: ArrayList<MethodParamDto> = ArrayList<MethodParamDto>()
     list!!.map {
         resList.add(MethodParamDto(it))

@@ -22,9 +22,10 @@ class MethodReturnEntity (
     val snapshot : SnapshotEntity = snapshot
 
     // method_id 정보
-    @ManyToOne(fetch = FetchType.LAZY)
+    @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "method_id")
     val method : MethodEntity? = method
+
 
     var clazzName : String = clazzName
 
