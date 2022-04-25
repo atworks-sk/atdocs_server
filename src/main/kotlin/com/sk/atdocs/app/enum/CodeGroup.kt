@@ -5,6 +5,7 @@ enum class CodeGroup(
 ) {
     CLAZZ_TYPE("clazzType"),
     FILE_TYPE("fileType"),
-    INHERITANCE_TYPE("inheritanceType")
+    INHERITANCE_TYPE("inheritanceType"),
+    SOURCE("source")
 //    ERROR_FAIL_PARSE("S002","JAVA Parsing 도중 애러가 발생하였습니다.")
 }

@@ -24,7 +24,7 @@ class AppInitializer(
     @PostConstruct
     fun postConstruct() {
         if(!projectRepository.findById(1L).isPresent){
-            projectRepository.save(ProjectEntity("atWorks - 테스트 자동화 시스템", "com.skcc.atworks"))
+            projectRepository.save(ProjectEntity("atWorks - 테스트 자동화 시스템"))
         }
 
         getCodeList()?.let { saveCode(it) }
@@ -40,6 +40,10 @@ class AppInitializer(
 
     fun getCodeList(): List<CodeEntity>? {
         val codeList: MutableList<CodeEntity> = ArrayList<CodeEntity>()
+
+        // source
+        codeList.add(CodeEntity("source", "java", "java"))
+        codeList.add(CodeEntity("source", "xml", "xml"))
 
         // fileType
         codeList.add(CodeEntity("fileType", "Class", "Class"))

@@ -1,10 +1,8 @@
 package com.sk.atdocs.controller
 //import lombok.RequiredArgsConstructor
-import com.sk.atdocs.dto.SaveResDto
 import com.sk.atdocs.dto.project.ProjectDto
-import com.sk.atdocs.dto.project.SearchListReqDto
+import com.sk.atdocs.dto.source.AddSourceReqDto
 import com.sk.atdocs.service.ProjectService
-import com.sk.atdocs.service.SnapshotService
 import mu.KotlinLogging
 import org.springframework.http.ResponseEntity
 
@@ -21,15 +19,18 @@ class ProjectController (
     var projectService: ProjectService
     ) {
 
-    /*
-     * project List search
-     */
-    @GetMapping("/searchList")
-    fun searchList(reqDto: SearchListReqDto, pageable: Pageable): ResponseEntity<Page<ProjectDto>> {
-        return ResponseEntity.ok(projectService.searchList(reqDto, pageable))
+    @GetMapping("/project-name-like")
+    fun searchList(@RequestParam projectName : String, pageable: Pageable): ResponseEntity<Page<ProjectDto>> {
+        return ResponseEntity.ok(projectService.searchList(projectName, pageable))
     }
 
-    @PutMapping("/save")
+    @GetMapping("/project-id/{projectId}")
+    fun searchDetail(@PathVariable projectId : Long): ResponseEntity<ProjectDto> {
+        return ResponseEntity.ok(projectService.searchProjectDetail(projectId))
+    }
+
+
+    @PutMapping("")
     fun save(@RequestBody reqDto : ProjectDto) : ResponseEntity<HttpStatus>{
         projectService.save(reqDto)
         return ResponseEntity<HttpStatus>(HttpStatus.OK)
@@ -49,5 +50,10 @@ class ProjectController (
         return ResponseEntity.ok(projectService.searchListWithoutPage())
     }
 
+    @PostMapping("/analysis/{projectId}")
+    fun addSource(@PathVariable projectId : Long): ResponseEntity<HttpStatus>{
+
+        return ResponseEntity<HttpStatus>(HttpStatus.OK)
+    }
 
 }
